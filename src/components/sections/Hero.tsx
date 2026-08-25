@@ -5,7 +5,10 @@ import { useRef } from 'react';
 import Button from '../ui/Button';
 import { siteConfig } from '../../../data/siteConfig';
 
+import { useEventModal } from '@/context/EventModalContext';
+
 export default function Hero() {
+  const { openPlanModal } = useEventModal();
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -158,7 +161,7 @@ export default function Hero() {
             >
               <Button
                 variant="cta"
-                href={hero.primaryCTA.href}
+                onClick={() => openPlanModal()}
                 icon={
                   <svg
                     className="w-5 h-5"

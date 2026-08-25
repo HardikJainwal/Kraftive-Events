@@ -31,12 +31,12 @@ const eventTypes = [
 ];
 
 const budgetRanges = [
-  '$5,000 – $15,000',
-  '$15,000 – $30,000',
-  '$30,000 – $50,000',
-  '$50,000 – $100,000',
-  '$100,000+',
-  'Let\'s Discuss',
+  '₹5 Lakhs – ₹15 Lakhs ($6k – $18k)',
+  '₹15 Lakhs – ₹35 Lakhs ($18k – $42k)',
+  '₹35 Lakhs – ₹75 Lakhs ($42k – $90k)',
+  '₹75 Lakhs – ₹1.5 Crores ($90k – $180k)',
+  '₹1.5 Crores+ ($180k+ Luxury)',
+  'Customized Budget / Let\'s Discuss',
 ];
 
 const guestRanges = [
@@ -59,7 +59,10 @@ async function submitForm(data: FormData): Promise<{ success: boolean; message: 
   });
 }
 
+import { useEventModal } from '@/context/EventModalContext';
+
 export default function ContactPage() {
+  const { openPlanModal } = useEventModal();
   const [form, setForm] = useState<FormData>({
     name: '',
     email: '',
@@ -186,12 +189,26 @@ export default function ContactPage() {
               transition={{ duration: 0.8 }}
               className="lg:col-span-3"
             >
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-charcoal mb-2">
-                Tell Us About Your Event
-              </h2>
-              <p className="text-charcoal-light/60 text-sm mb-8">
-                Fill out the form below and we&apos;ll reach out within 24 hours to start bringing your vision to life.
-              </p>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                <div>
+                  <h2 className="font-display text-2xl md:text-3xl font-bold text-charcoal mb-1">
+                    Tell Us About Your Event
+                  </h2>
+                  <p className="text-charcoal-light/60 text-sm">
+                    Fill out the form below or launch our instant VIP pass builder.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => openPlanModal()}
+                  className="bg-gold/10 text-gold border border-gold/40 hover:bg-gold hover:text-charcoal px-5 py-2.5 text-xs uppercase font-bold tracking-widest transition-all cursor-pointer shrink-0 inline-flex items-center gap-1.5"
+                >
+                  <svg className="w-3.5 h-3.5 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                  </svg>
+                  Instant VIP Planner Pass
+                </button>
+              </div>
 
               {submitResult?.success ? (
                 <motion.div
@@ -199,7 +216,11 @@ export default function ContactPage() {
                   animate={{ opacity: 1, scale: 1 }}
                   className="p-8 border border-gold/30 bg-gold/5 text-center"
                 >
-                  <span className="text-4xl mb-4 block">✨</span>
+                  <div className="w-12 h-12 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-6 h-6 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
                   <h3 className="font-display text-2xl font-bold text-charcoal mb-2">
                     Thank You!
                   </h3>

@@ -14,10 +14,10 @@ const timeline = [
 ];
 
 const values = [
-  { icon: '✦', title: 'Excellence', description: 'Every detail, every moment is held to the highest standard of quality and beauty.' },
-  { icon: '♡', title: 'Passion', description: 'We pour our hearts into every event because your celebrations are our life\'s work.' },
-  { icon: '◇', title: 'Creativity', description: 'No two events are the same. We bring fresh, innovative ideas to every project.' },
-  { icon: '⚘', title: 'Integrity', description: 'Transparent communication, honest pricing, and unwavering commitment to your vision.' },
+  { id: 'excellence', title: 'Excellence', description: 'Every detail, every moment is held to the highest standard of quality and beauty.' },
+  { id: 'passion', title: 'Passion', description: 'We pour our hearts into every event because your celebrations are our life\'s work.' },
+  { id: 'creativity', title: 'Creativity', description: 'No two events are the same. We bring fresh, innovative ideas to every project.' },
+  { id: 'integrity', title: 'Integrity', description: 'Transparent communication, honest pricing, and unwavering commitment to your vision.' },
 ];
 
 export default function AboutPage() {
@@ -99,7 +99,7 @@ export default function AboutPage() {
             >
               <div className="relative aspect-[4/5] overflow-hidden">
                 <Image
-                  src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80"
+                  src="/images/asset2.jpeg"
                   alt="Kraftive Events & Media team setup"
                   fill
                   className="object-cover"
@@ -199,7 +199,28 @@ export default function AboutPage() {
                 transition={{ delay: i * 0.1, duration: 0.6 }}
                 className="text-center p-8 border border-gold/10 hover:border-gold/30 transition-all duration-500 group bg-cream/50"
               >
-                <span className="text-3xl mb-4 block text-gold">{value.icon}</span>
+                <div className="w-12 h-12 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                  {value.id === 'excellence' && (
+                    <svg className="w-6 h-6 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                    </svg>
+                  )}
+                  {value.id === 'passion' && (
+                    <svg className="w-6 h-6 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                  )}
+                  {value.id === 'creativity' && (
+                    <svg className="w-6 h-6 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                    </svg>
+                  )}
+                  {value.id === 'integrity' && (
+                    <svg className="w-6 h-6 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  )}
+                </div>
                 <h3 className="font-display text-xl font-bold text-charcoal mb-3 group-hover:text-gold transition-colors duration-300">
                   {value.title}
                 </h3>

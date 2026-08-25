@@ -3,8 +3,10 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import Button from '../ui/Button';
+import { useEventModal } from '@/context/EventModalContext';
 
 export default function CTASection() {
+  const { openPlanModal } = useEventModal();
   const sectionRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -12,7 +14,6 @@ export default function CTASection() {
   });
 
   const bgY = useTransform(scrollYProgress, [0, 1], ['-10%', '10%']);
-
   const words = 'Your Moment Deserves to Be Extraordinary.'.split(' ');
 
   return (
@@ -33,7 +34,7 @@ export default function CTASection() {
               'url(https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1600&q=80)',
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-charcoal/90 via-charcoal/80 to-warm-brown/90" />
+        <div className="absolute inset-0 bg-gradient-to-r from-charcoal/95 via-charcoal/85 to-warm-brown/95" />
       </motion.div>
 
       {/* Gold shimmer particles */}
@@ -94,10 +95,9 @@ export default function CTASection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.8, duration: 0.6 }}
-          className="text-ivory/60 text-base md:text-lg lg:text-xl leading-relaxed mb-10 max-w-2xl mx-auto"
+          className="text-ivory/80 text-base md:text-lg lg:text-xl leading-relaxed mb-10 max-w-2xl mx-auto"
         >
-          Tell us your vision. We&apos;ll turn it into an unforgettable
-          experience.
+          Tell us your vision. We&apos;ll turn it into an unforgettable experience.
         </motion.p>
 
         <motion.div
@@ -108,7 +108,7 @@ export default function CTASection() {
         >
           <Button
             variant="cta"
-            href="/contact"
+            onClick={() => openPlanModal()}
             icon={
               <svg
                 className="w-5 h-5"

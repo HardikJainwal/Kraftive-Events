@@ -7,6 +7,8 @@ import { navItems, socialLinks } from '../../../data/navigation';
 import { siteConfig } from '../../../data/siteConfig';
 import { services } from '../../../data/services';
 
+import { useEventModal } from '@/context/EventModalContext';
+
 const footerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -52,6 +54,7 @@ const SocialIcon = ({ icon }: { icon: string }) => {
 };
 
 export default function Footer() {
+  const { openPlanModal } = useEventModal();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -238,9 +241,10 @@ export default function Footer() {
           <p className="font-display text-xl md:text-2xl text-ivory/90 italic">
             Ready to create something extraordinary?
           </p>
-          <Link
-            href="/contact"
-            className="bg-gold text-charcoal font-semibold text-sm tracking-widest uppercase px-8 py-3 border border-gold hover:bg-gold-dark hover:border-gold-dark transition-all duration-300 inline-flex items-center gap-2 shrink-0"
+          <button
+            type="button"
+            onClick={() => openPlanModal()}
+            className="bg-gold text-charcoal font-semibold text-sm tracking-widest uppercase px-8 py-3 border border-gold hover:bg-gold-dark hover:border-gold-dark transition-all duration-300 inline-flex items-center gap-2 shrink-0 cursor-pointer shadow-md"
           >
             Let&apos;s Plan
             <svg
@@ -256,7 +260,7 @@ export default function Footer() {
                 d="M17 8l4 4m0 0l-4 4m4-4H3"
               />
             </svg>
-          </Link>
+          </button>
         </motion.div>
 
         {/* Copyright */}

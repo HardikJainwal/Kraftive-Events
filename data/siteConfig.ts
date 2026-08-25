@@ -32,7 +32,7 @@ export const siteConfig = {
     secondaryCTA: { label: 'Explore Our Work', href: '/portfolio' },
     media: {
       type: 'video' as const,
-      src: '/videos/blackBG.mp4',
+      src: '/videos/new.mp4',
       poster: '/images/hero-poster.jpg',
       fallbackGradient: true,
     },

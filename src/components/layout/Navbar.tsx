@@ -8,7 +8,10 @@ import Image from 'next/image';
 import { navItems, ctaNav } from '../../../data/navigation';
 import { siteConfig } from '../../../data/siteConfig';
 
+import { useEventModal } from '@/context/EventModalContext';
+
 export default function Navbar() {
+  const { openPlanModal } = useEventModal();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const pathname = usePathname();
@@ -112,9 +115,10 @@ export default function Navbar() {
             ))}
 
             {/* CTA Button */}
-            <Link
-              href={ctaNav.href}
-              className="ml-4 relative overflow-hidden bg-gold text-charcoal font-semibold text-sm tracking-wide uppercase px-6 py-3 border border-gold hover:bg-gold-dark hover:border-gold-dark transition-all duration-300 inline-flex items-center gap-2"
+            <button
+              type="button"
+              onClick={() => openPlanModal()}
+              className="ml-4 relative overflow-hidden bg-gold text-charcoal font-semibold text-sm tracking-wide uppercase px-6 py-3 border border-gold hover:bg-gold-dark hover:border-gold-dark transition-all duration-300 inline-flex items-center gap-2 cursor-pointer shadow-md"
             >
               <span className="relative z-10">{ctaNav.label}</span>
               <svg
@@ -130,7 +134,7 @@ export default function Navbar() {
                   d="M17 8l4 4m0 0l-4 4m4-4H3"
                 />
               </svg>
-            </Link>
+            </button>
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -227,9 +231,13 @@ export default function Navbar() {
                 transition={{ delay: 0.6, duration: 0.5 }}
                 className="mt-4"
               >
-                <Link
-                  href={ctaNav.href}
-                  className="bg-gold text-charcoal font-semibold text-sm tracking-widest uppercase px-10 py-4 border border-gold hover:bg-gold-dark transition-all duration-300 inline-flex items-center gap-3"
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileOpen(false);
+                    openPlanModal();
+                  }}
+                  className="bg-gold text-charcoal font-semibold text-sm tracking-widest uppercase px-10 py-4 border border-gold hover:bg-gold-dark transition-all duration-300 inline-flex items-center gap-3 cursor-pointer"
                 >
                   {ctaNav.label}
                   <svg
@@ -245,7 +253,7 @@ export default function Navbar() {
                       d="M17 8l4 4m0 0l-4 4m4-4H3"
                     />
                   </svg>
-                </Link>
+                </button>
               </motion.div>
 
               {/* Decorative Gold Line */}

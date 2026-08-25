@@ -1,7 +1,6 @@
 import Hero from '@/components/sections/Hero';
 import AboutPreview from '@/components/sections/AboutPreview';
 import ServicesPreview from '@/components/sections/ServicesPreview';
-import FeaturedCarousel from '@/components/sections/FeaturedCarousel';
 import GlassParallaxSection from '@/components/sections/GlassParallaxSection';
 import PortfolioPreview from '@/components/sections/PortfolioPreview';
 import Testimonials from '@/components/sections/Testimonials';
@@ -13,7 +12,6 @@ export default function Home() {
       <Hero />
       <AboutPreview />
       <ServicesPreview />
-      <FeaturedCarousel />
       <GlassParallaxSection />
       <PortfolioPreview />
       <Testimonials />
