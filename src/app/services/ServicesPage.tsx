@@ -7,8 +7,6 @@ import Button from '@/components/ui/Button';
 import SectionHeading from '@/components/ui/SectionHeading';
 import { services } from '../../../data/services';
 
-import { useEventModal } from '@/context/EventModalContext';
-
 const process = [
   { step: '01', title: 'Discovery', description: 'We start with an in-depth consultation to understand your vision, style, and expectations for the celebration.' },
   { step: '02', title: 'Concept & Design', description: 'Our creative team develops a bespoke concept — from mood boards and color palettes to detailed floor plans.' },
@@ -17,7 +15,6 @@ const process = [
 ];
 
 export default function ServicesPage() {
-  const { openPlanModal } = useEventModal();
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -90,38 +87,7 @@ export default function ServicesPage() {
 
               {/* Content */}
               <div>
-                <div className="w-12 h-12 rounded-lg bg-gold/10 border border-gold/30 flex items-center justify-center mb-4">
-                  {service.icon === 'corporate' && (
-                    <svg className="w-6 h-6 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m0 0v-4a2 2 0 012-2h2a2 2 0 012 2v4m-6 0h6" />
-                    </svg>
-                  )}
-                  {service.icon === 'btl' && (
-                    <svg className="w-6 h-6 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
-                    </svg>
-                  )}
-                  {service.icon === 'fabrication' && (
-                    <svg className="w-6 h-6 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                    </svg>
-                  )}
-                  {service.icon === 'automotive' && (
-                    <svg className="w-6 h-6 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M8 17a2 2 0 100-4 2 2 0 000 4zm8 0a2 2 0 100-4 2 2 0 000 4zM3 9l2-4h14l2 4M3 9h18v6a1 1 0 01-1 1H4a1 1 0 01-1-1V9z" />
-                    </svg>
-                  )}
-                  {service.icon === 'decor' && (
-                    <svg className="w-6 h-6 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                    </svg>
-                  )}
-                  {service.icon === 'gifting' && (
-                    <svg className="w-6 h-6 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                    </svg>
-                  )}
-                </div>
+                <span className="text-3xl mb-4 block">{service.icon}</span>
                 <h2 className="font-display text-3xl md:text-4xl font-bold text-charcoal mb-4">
                   {service.title}
                 </h2>
@@ -140,7 +106,7 @@ export default function ServicesPage() {
                   ))}
                 </div>
 
-                <Button variant="secondary" onClick={() => openPlanModal(service.title)}>
+                <Button variant="secondary" href="/contact">
                   Plan This Event
                 </Button>
               </div>
@@ -213,7 +179,7 @@ export default function ServicesPage() {
             viewport={{ once: true }}
             transition={{ delay: 0.4 }}
           >
-            <Button variant="cta" onClick={() => openPlanModal()}>
+            <Button variant="cta" href="/contact">
               Plan Your Event
             </Button>
           </motion.div>

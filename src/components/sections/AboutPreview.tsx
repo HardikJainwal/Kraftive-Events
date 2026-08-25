@@ -46,7 +46,7 @@ export default function AboutPreview() {
                 className="w-full h-full"
               >
                 <Image
-                  src="/images/asset1.jpeg"
+                  src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800&q=80"
                   alt="Elegant luxury event venue with golden lighting and floral arrangements"
                   fill
                   className="object-cover"

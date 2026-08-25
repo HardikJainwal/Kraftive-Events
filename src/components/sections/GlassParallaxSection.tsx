@@ -50,7 +50,8 @@ export default function GlassParallaxSection() {
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: 'url(/images/asset3.jpeg)',
+            backgroundImage:
+              'url(https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1600&q=80)',
           }}
         />
         <div className="absolute inset-0 bg-charcoal/40" />
