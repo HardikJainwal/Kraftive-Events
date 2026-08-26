@@ -1,20 +1,45 @@
 'use client';
 
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import Button from '../ui/Button';
 import { siteConfig } from '../../../data/siteConfig';
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end start'],
   });
 
-  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
   const textY = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
+  // Pause video when out of view to eliminate scroll lag & save GPU/CPU performance
+  useEffect(() => {
+    const videoNode = videoRef.current;
+    const containerNode = containerRef.current;
+    if (!videoNode || !containerNode) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            videoNode.play().catch(() => {});
+          } else {
+            videoNode.pause();
+          }
+        });
+      },
+      { threshold: 0.05 }
+    );
+
+    observer.observe(containerNode);
+    return () => observer.disconnect();
+  }, []);
 
   const hero = siteConfig.hero;
 
@@ -27,10 +52,15 @@ export default function Hero() {
       className="relative h-screen min-h-[700px] max-h-[1200px] w-full overflow-hidden"
       aria-label="Hero"
     >
-      {/* Background Video / Fallback */}
+      {/* Background Video / Fallback with GPU acceleration */}
       <motion.div
-        style={{ y: bgY }}
-        className="absolute inset-0 w-full h-[120%] -top-[10%]"
+        style={{
+          y: bgY,
+          willChange: 'transform',
+          transform: 'translate3d(0,0,0)',
+          backfaceVisibility: 'hidden',
+        }}
+        className="absolute inset-0 w-full h-[115%] -top-[7.5%]"
       >
         {/* Gradient fallback — sits behind the video */}
         <div
@@ -40,18 +70,25 @@ export default function Hero() {
 
         {/* Background video */}
         <video
+          ref={videoRef}
           autoPlay
           muted
           loop
           playsInline
+          preload="auto"
           className="absolute inset-0 w-full h-full object-cover z-[1]"
+          style={{
+            willChange: 'transform',
+            transform: 'translate3d(0,0,0)',
+            backfaceVisibility: 'hidden',
+          }}
           aria-hidden="true"
         >
           <source src={hero.media.src} type="video/mp4" />
         </video>
 
         {/* Animated gold particles overlay */}
-        <div className="absolute inset-0" aria-hidden="true">
+        <div className="absolute inset-0 z-[2] pointer-events-none" aria-hidden="true">
           <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-gold/30 rounded-full animate-float" />
           <div
             className="absolute top-1/3 right-1/3 w-1.5 h-1.5 bg-gold/20 rounded-full animate-float"
@@ -71,22 +108,13 @@ export default function Hero() {
           />
         </div>
 
-        {/* Dark overlay — base layer */}
-        <div className="absolute inset-0 bg-black/82" aria-hidden="true" />
-
-        {/* Left-side vignette — extra darkening behind text */}
+        {/* Consolidated Dark vignette & bottom fade overlay for 60fps rendering */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 z-[3] pointer-events-none"
           style={{
             background:
-              'linear-gradient(to right, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.65) 50%, rgba(0,0,0,0.15) 100%)',
+              'linear-gradient(to right, rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.1) 100%), linear-gradient(to top, rgba(250,248,245,1) 0%, rgba(0,0,0,0) 100px)',
           }}
-          aria-hidden="true"
-        />
-
-        {/* Bottom gradient fade */}
-        <div
-          className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-ivory to-transparent"
           aria-hidden="true"
         />
       </motion.div>

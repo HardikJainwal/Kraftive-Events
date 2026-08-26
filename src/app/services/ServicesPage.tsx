@@ -87,7 +87,6 @@ export default function ServicesPage() {
 
               {/* Content */}
               <div>
-                <span className="text-3xl mb-4 block">{service.icon}</span>
                 <h2 className="font-display text-3xl md:text-4xl font-bold text-charcoal mb-4">
                   {service.title}
                 </h2>

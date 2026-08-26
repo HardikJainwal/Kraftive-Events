@@ -68,10 +68,10 @@ export default function AboutPreview() {
               className="absolute -bottom-6 -right-6 md:bottom-8 md:-right-8 bg-charcoal text-ivory px-6 py-4 shadow-xl"
             >
               <span className="font-display text-3xl font-bold gold-gradient-text">
-                500+
+                100%
               </span>
               <span className="block text-xs text-ivory/60 tracking-widest uppercase mt-1">
-                Events Created
+               RETENTION RATE
               </span>
             </motion.div>
           </motion.div>
@@ -111,10 +111,10 @@ export default function AboutPreview() {
             {/* Key highlights */}
             <div className="grid grid-cols-2 gap-6 mb-10">
               {[
-                { number: '12+', label: 'Years of Excellence' },
-                { number: '50+', label: 'Expert Team Members' },
-                { number: '500+', label: 'Events Planned' },
-                { number: '100%', label: 'Client Satisfaction' },
+                { number: '100+', label: 'Corporate Clients' },
+                { number: '700+', label: 'EVENTS AND GIFTING' },
+                { number: '100+', label: 'EXHIBITIONS' },
+                { number: '700%', label: 'ACTIVATIONS' },
               ].map((stat, i) => (
                 <motion.div
                   key={stat.label}

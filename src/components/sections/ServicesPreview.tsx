@@ -38,8 +38,8 @@ export default function ServicesPreview() {
       <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 relative z-10">
         <SectionHeading
           eyebrow="What We Do"
-          title="Services Crafted for Perfection"
-          subtitle="Every event is unique. We offer a comprehensive suite of services tailored to bring your vision to life with unparalleled elegance and attention to detail."
+          title="Our Expertise"
+          subtitle="We offer a comprehensive suite of services tailored to bring your vision to life with unparalleled elegance and attention to detail."
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -65,11 +65,6 @@ export default function ServicesPreview() {
                 {/* Gold overlay on hover */}
                 <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
 
-                {/* Icon */}
-                <div className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center bg-ivory/10 backdrop-blur-sm border border-ivory/20 text-lg">
-                  {service.icon}
-                </div>
-
                 {/* CTA overlay */}
                 <div className="absolute inset-0 flex items-end p-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
                   <span className="text-ivory text-sm font-semibold tracking-widest uppercase flex items-center gap-2">
@@ -93,12 +88,19 @@ export default function ServicesPreview() {
 
               {/* Content */}
               <div className="p-6 md:p-8">
-                <h3 className="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 group-hover:text-gold transition-colors duration-300">
+                <h3 className="font-display text-xl md:text-2xl font-bold text-charcoal mb-4 group-hover:text-gold transition-colors duration-300">
                   {service.title}
                 </h3>
-                <p className="text-charcoal-light/60 text-sm leading-relaxed">
-                  {service.description}
-                </p>
+                
+                <ul className="space-y-2.5 text-charcoal-light/70 text-sm">
+                  {service.pointers.map((pointer, idx) => (
+                    <li key={idx} className="flex items-start gap-2.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-gold shrink-0 mt-1.5" />
+                      <span className="leading-snug">{pointer}</span>
+                    </li>
+                  ))}
+                </ul>
+
                 {/* Gold line */}
                 <div className="mt-5 w-8 h-[2px] bg-gold/40 group-hover:w-12 group-hover:bg-gold transition-all duration-500" />
               </div>

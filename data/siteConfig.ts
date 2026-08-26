@@ -1,7 +1,7 @@
 export const siteConfig = {
   brand: {
-    name: 'Kraftive Events & Media',
-    tagline: 'Delivering Impactful Events & Brand Experiences Across India',
+    name: 'Mumbai’s Leading Event Partner',
+    tagline: 'Delivering Impactful Events & Exhibitions.',
     shortDescription:
       'Kraftive Events & Media is a full-service event management agency based in Mumbai, delivering impactful events and brand experiences across India. From corporate events and venue solutions to BTL activations, décor, fabrication, manpower, and customised gifting, we handle every detail under one roof.',
     logo: '/images/logo.png',
@@ -24,10 +24,10 @@ export const siteConfig = {
     linkedin: 'https://linkedin.com/company/kraftiveevents',
   },
   hero: {
-    eyebrow: 'KRAFTIVE EVENTS & MEDIA',
-    headline: 'Delivering Impactful Events Across India',
+    eyebrow: 'Mumbai’s Leading Event Partner',
+    headline: 'Delivering Impactful Events & Exhibitions.',
     subtext:
-      'Full-service event management from Mumbai — corporate events, venue solutions, BTL activations, décor, fabrication, manpower & customised gifting, all under one roof.',
+      'Creating experiences that bring brands, people and purpose together. Driven by thoughtful planning, seamless execution and an uncompromising eye for detail.',
     primaryCTA: { label: 'Plan Your Event', href: '/contact' },
     secondaryCTA: { label: 'Explore Our Work', href: '/portfolio' },
     media: {
@@ -39,7 +39,7 @@ export const siteConfig = {
   },
   seo: {
     titleTemplate: '%s | Kraftive Events & Media — Mumbai',
-    defaultTitle: 'Kraftive Events & Media — Full-Service Event Management, Mumbai',
+    defaultTitle: 'Kraftive Events & Media | Full-Service Event Management, Mumbai',
     description:
       'Kraftive Events & Media is a Mumbai-based full-service event management agency delivering corporate events, venue sourcing, BTL activations, décor, stall fabrication, manpower & customised gifting across India.',
     ogImage: '/images/og-image.jpg',
