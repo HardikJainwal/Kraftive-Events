@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { playfair, dmSans } from '@/lib/fonts';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import InquiryModal from '@/components/ui/InquiryModal';
 import SmoothScrollProvider from '@/components/providers/SmoothScrollProvider';
 import { siteConfig } from '../../data/siteConfig';
 import './globals.css';
@@ -55,6 +56,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <InquiryModal />
         </SmoothScrollProvider>
       </body>
     </html>

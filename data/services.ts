@@ -16,7 +16,7 @@ export const services: Service[] = [
       'Elevating your brand with impeccably planned corporate events that leave a lasting impression on every attendee.',
     longDescription:
       'From product launches, town halls and award nights to conferences, roadshows and team offsites — we design and execute corporate events that reflect your brand identity and create memorable audience experiences. With key elements managed in-house, we ensure greater control, seamless execution and consistent quality from concept to completion.',
-    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80',
+    image: '/images/Corporate events.png',
     pointers: [
       'End to End Management',
       'Pan Indian Network',
@@ -38,7 +38,7 @@ export const services: Service[] = [
       'Finding the perfect space for your event — from intimate boardrooms to grand banquet halls across India.',
     longDescription:
       'We help you find the right venue for every event — from premium hotels and banquet halls to unique event spaces across Mumbai and India. Our team shortlists venues based on your event format, guest count, budget and brand requirements, while handling site visits, negotiations, vendor coordination and logistics to ensure a smooth, hassle-free experience.',
-    image: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800&q=80',
+    image: '/images/Venue.png',
     pointers: [
       'Transparent Pricing, 0% commission',
       'Verified Venue Partners',
@@ -60,7 +60,7 @@ export const services: Service[] = [
       'Creating high-impact below-the-line activations that drive genuine engagement with your target audience.',
     longDescription:
       'We create and execute high-impact BTL campaigns that take your brand directly to the consumer. From mall activations and retail promotions to experiential campaigns, sampling drives and RWA outreach, we combine creative concepts with strong on-ground execution to drive visibility, engagement and measurable consumer interaction.',
-    image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80',
+    image: '/images/Btl activation.png',
     pointers: [
       'Pan India Activation Network',
       'On Ground Execution Experts',
@@ -71,7 +71,7 @@ export const services: Service[] = [
       'On-Ground Brand Promotions',
       'Experiential Marketing',
       'Product Sampling & Demonstrations',
-      'RWA & Society Activationss',
+      'RWA & Society Activations',
       'Roadshows & Mobile Activations',
     ],
   },
@@ -81,8 +81,8 @@ export const services: Service[] = [
     description:
       'Designing and fabricating eye-catching exhibition stalls and branded structures that command attention.',
     longDescription:
-      'We design and build impactful exhibition stalls and branded spaces that attract attention, communicate your brand story and maximise visitor engagement. From creative 3D concepts and space planning to fabrication, branding and on-site installation, our in- house team manages the entire process for a seamless, execution-ready experience.',
-    image: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=800&q=80',
+      'We design and build impactful exhibition stalls and branded spaces that attract attention, communicate your brand story and maximise visitor engagement. From creative 3D concepts and space planning to fabrication, branding and on-site installation, our in-house team manages the entire process for a seamless, execution-ready experience.',
+    image: '/images/Exhibiton final.png',
     pointers: [
       'Creative Stall Design Concepts',
       'In House Fabrication Team',
@@ -104,7 +104,7 @@ export const services: Service[] = [
       'Transforming blank spaces into immersive brand environments with thoughtful, high-impact décor.',
     longDescription:
       'We create immersive event environments that bring your theme, brand and vision to life. From elegant floral styling and thematic décor to statement stages, ambient lighting and branded installations, our team manages the entire journey — from concept development and mood boards to final setup and dismantling.',
-    image: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=800&q=80',
+    image: '/images/Decor.png',
     pointers: [
       'Theme Based Decor Solutions',
       'Every Detail Crafted To Perfection',
@@ -120,25 +120,25 @@ export const services: Service[] = [
     ],
   },
   {
-    id: 'customised-gifting',
-    title: 'Customised Gifting',
+    id: 'engagement-activities',
+    title: 'Engagement Activities',
     description:
-      'Curating bespoke corporate gifts and event mementos that leave a lasting impression long after the event.',
+      'Creating high-impact employee and brand engagement activities that captivate attendees and elevate your brand.',
     longDescription:
-      'From premium welcome kits and branded merchandise to luxury hampers and personalised keepsakes, our gifting team sources, designs, and delivers customised gifts that reflect your brand values and resonate with recipients.',
-    image: 'https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=800&q=80',
+      'We design and execute interactive engagement activities, employee engagement events, team building, and experiential brand activations. We turn event spaces into vibrant interactive hubs that foster connections and leave a lasting impression.',
+    image: '/images/Engagement activities.png',
     pointers: [
-      ' Customised Corporate Gifts',
-      '3d Models, Merchandise & More..',
-      'Quality Products with Timely Delivery',
+      'Interactive Engagement',
+      'Customized Concepts',
+      'Pan-India Execution',
     ],
     features: [
-      'Branded Merchandise',
-      'Welcome Kits & Hampers',
-      'Luxury Gift Curation',
-      'Personalised Packaging',
-      'Bulk Corporate Orders',
-      'Pan-India Delivery',
+      'Employee Engagement Events',
+      'Interactive Brand Booths',
+      'Team Building & Offsites',
+      'Experiential Marketing Drives',
+      'Gamified Event Setup',
+      'On-Ground Engagement',
     ],
   },
 ];
