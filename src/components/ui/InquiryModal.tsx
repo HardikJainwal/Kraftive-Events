@@ -198,8 +198,10 @@ export default function InquiryModal() {
                       <option value="BTL Activations">BTL Activations</option>
                       <option value="Exhibition & Fabrication">Exhibition & Fabrication</option>
                       <option value="Décor & Design">Décor & Design</option>
+                      <option value="Customised Gifting">Customised Gifting</option>
                       <option value="Engagement Activities">Engagement Activities</option>
                       <option value="Weddings & Luxury Celebrations">Weddings & Luxury Celebrations</option>
+                      <option value="Branding & Visual Solutions">Branding & Visual Solutions</option>
                       <option value="Other">Other (Please Specify)</option>
                     </select>
                   </div>

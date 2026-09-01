@@ -120,6 +120,28 @@ export const services: Service[] = [
     ],
   },
   {
+    id: 'customised-gifting',
+    title: 'Customised Gifting',
+    description:
+      'Bespoke corporate and luxury event gifting curated to reflect your brand identity and express appreciation.',
+    longDescription:
+      'We design, curate, and deliver premium customised gifting solutions tailored for corporate milestones, client appreciation, employee recognition, festive occasions, and luxury events. From bespoke packaging and branded merchandise to artisanal hampers and personalized keepsakes, we handle conceptualization, sourcing, custom branding, packaging, and seamless pan-India delivery.',
+    image: '/images/Customised gifting.png',
+    pointers: [
+      'Bespoke Curations & Packaging',
+      'End-to-End Pan-India Delivery',
+      'Corporate & Festival Kits',
+    ],
+    features: [
+      'Corporate Milestone Gifts',
+      'Client Appreciation Hampers',
+      'Festive & Seasonal Gift Boxes',
+      'Bespoke Executive Giveaways',
+      'Employee Welcome & Joining Kits',
+      'Custom Branded Merchandise',
+    ],
+  },
+  {
     id: 'engagement-activities',
     title: 'Engagement Activities',
     description:
@@ -139,6 +161,50 @@ export const services: Service[] = [
       'Experiential Marketing Drives',
       'Gamified Event Setup',
       'On-Ground Engagement',
+    ],
+  },
+  {
+    id: 'weddings',
+    title: 'Weddings & Luxury Celebrations',
+    description:
+      'Crafting unforgettable, lavish wedding experiences and private celebrations with unmatched elegance.',
+    longDescription:
+      'We turn dream weddings and luxury celebrations into magnificent realities. From venue selection and theme design to entertainment curation, hospitality management, and flawless day-of coordination, we curate every element with precision, grandeur, and emotional resonance for you and your guests.',
+    image: '/images/Weddings.png',
+    pointers: [
+      'End-to-End Wedding Planning',
+      'Luxury Décor & Theme Styling',
+      'Destination Wedding Management',
+    ],
+    features: [
+      'Destination Wedding Planning',
+      'Theme & Floral Styling',
+      'Vendor & Hospitality Management',
+      'Artist & Entertainment Curation',
+      'Sangeet & Reception Production',
+      'Bespoke Guest Experiences',
+    ],
+  },
+  {
+    id: 'branding',
+    title: 'Branding & Visual Solutions',
+    description:
+      'Elevating brand identities through strategic visual communication, graphic design, and event branding.',
+    longDescription:
+      'We craft compelling visual identity systems and event branding collaterals that resonate with your audience. From brand identity development, logos, and event collateral design to immersive digital graphics and environmental branding, we ensure consistent and captivating brand messaging across all touchpoints.',
+    image: '/images/Branding.png',
+    pointers: [
+      '360° Brand Identity Design',
+      'Event & Environmental Branding',
+      'High-Impact Visual Collaterals',
+    ],
+    features: [
+      'Brand Identity & Logo Design',
+      'Event Signage & Collaterals',
+      'Environmental & Spatial Branding',
+      'Digital & Social Media Assets',
+      'Brand Guidelines & Style Guides',
+      'Print & Promotional Material Design',
     ],
   },
 ];
