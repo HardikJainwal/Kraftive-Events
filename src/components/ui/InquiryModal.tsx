@@ -21,15 +21,25 @@ export default function InquiryModal() {
     timestamp: '',
   });
 
-  // 5-second initial delay pop-up logic with sessionStorage persistence
+  // Listen for trigger events & 5-second initial delay pop-up logic with sessionStorage persistence
   useEffect(() => {
+    const handleTrigger = () => {
+      setIsOpen(true);
+    };
+    window.addEventListener('open-inquiry-modal', handleTrigger);
+
     const hasSeenModal = sessionStorage.getItem('luxe_inquiry_modal_dismissed');
+    let timer: NodeJS.Timeout | undefined;
     if (!hasSeenModal) {
-      const timer = setTimeout(() => {
+      timer = setTimeout(() => {
         setIsOpen(true);
       }, 5000);
-      return () => clearTimeout(timer);
     }
+
+    return () => {
+      window.removeEventListener('open-inquiry-modal', handleTrigger);
+      if (timer) clearTimeout(timer);
+    };
   }, []);
 
   const handleClose = () => {

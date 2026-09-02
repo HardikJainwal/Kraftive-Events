@@ -93,7 +93,7 @@ export default function AboutPreview() {
             >
               Crafting{' '}
               <span className="italic text-gold">Extraordinary</span>{' '}
-              Moments Since 2010
+              Moments Since 2020
             </h2>
             <div className="w-16 h-[2px] bg-gradient-to-r from-gold to-gold-muted mb-8" />
             <p className="text-charcoal-light/70 text-base md:text-lg leading-relaxed mb-6">
@@ -114,7 +114,7 @@ export default function AboutPreview() {
                 { number: '100+', label: 'Corporate Clients' },
                 { number: '700+', label: 'EVENTS AND GIFTING' },
                 { number: '100+', label: 'EXHIBITIONS' },
-                { number: '700%', label: 'ACTIVATIONS' },
+                { number: '700+', label: 'activation & branding' },
               ].map((stat, i) => (
                 <motion.div
                   key={stat.label}

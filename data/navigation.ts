@@ -18,9 +18,8 @@ export const ctaNav = {
 };
 
 export const socialLinks = [
-  { label: 'Instagram', href: 'https://instagram.com/kcevents', icon: 'instagram' },
-  { label: 'Facebook', href: 'https://facebook.com/kcevents', icon: 'facebook' },
-  { label: 'Pinterest', href: 'https://pinterest.com/kcevents', icon: 'pinterest' },
-  { label: 'Twitter', href: 'https://twitter.com/kcevents', icon: 'twitter' },
-  { label: 'LinkedIn', href: 'https://linkedin.com/company/kcevents', icon: 'linkedin' },
+  { label: 'Instagram', href: 'https://www.instagram.com/kraftive_events/', icon: 'instagram' },
+  { label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61584206018149', icon: 'facebook' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/kraftive-events-media/?viewAsMember=true', icon: 'linkedin' },
+  { label: 'WhatsApp', href: 'https://wa.me/919082097808', icon: 'whatsapp' },
 ];

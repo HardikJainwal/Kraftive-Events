@@ -33,7 +33,7 @@ export const services: Service[] = [
   },
   {
     id: 'venue-sourcing',
-    title: 'Venue Sourcing',
+    title: 'Venue',
     description:
       'Finding the perfect space for your event — from intimate boardrooms to grand banquet halls across India.',
     longDescription:
@@ -55,7 +55,7 @@ export const services: Service[] = [
   },
   {
     id: 'btl-activations',
-    title: 'BTL Activations',
+    title: 'BTL',
     description:
       'Creating high-impact below-the-line activations that drive genuine engagement with your target audience.',
     longDescription:
@@ -77,7 +77,7 @@ export const services: Service[] = [
   },
   {
     id: 'stall-fabrication',
-    title: 'Exhibition & Fabrication',
+    title: 'Exhibition',
     description:
       'Designing and fabricating eye-catching exhibition stalls and branded structures that command attention.',
     longDescription:
@@ -99,7 +99,7 @@ export const services: Service[] = [
   },
   {
     id: 'decor',
-    title: 'Décor & Design',
+    title: 'Decor',
     description:
       'Transforming blank spaces into immersive brand environments with thoughtful, high-impact décor.',
     longDescription:
@@ -121,16 +121,16 @@ export const services: Service[] = [
   },
   {
     id: 'customised-gifting',
-    title: 'Customised Gifting',
+    title: 'Gifting',
     description:
       'Bespoke corporate and luxury event gifting curated to reflect your brand identity and express appreciation.',
     longDescription:
       'We design, curate, and deliver premium customised gifting solutions tailored for corporate milestones, client appreciation, employee recognition, festive occasions, and luxury events. From bespoke packaging and branded merchandise to artisanal hampers and personalized keepsakes, we handle conceptualization, sourcing, custom branding, packaging, and seamless pan-India delivery.',
     image: '/images/Customised gifting.png',
     pointers: [
-      'Bespoke Curations & Packaging',
-      'End-to-End Pan-India Delivery',
-      'Corporate & Festival Kits',
+      'Customised Corporate Gifts',
+      '3d Models, Merchandise & More..',
+      'Quality Products with Timely Delivery',
     ],
     features: [
       'Corporate Milestone Gifts',
@@ -145,66 +145,88 @@ export const services: Service[] = [
     id: 'engagement-activities',
     title: 'Engagement Activities',
     description:
-      'Creating high-impact employee and brand engagement activities that captivate attendees and elevate your brand.',
+      'Creating interactive experiences that keep guests engaged, entertained and connected throughout your event.',
     longDescription:
-      'We design and execute interactive engagement activities, employee engagement events, team building, and experiential brand activations. We turn event spaces into vibrant interactive hubs that foster connections and leave a lasting impression.',
+      'We create interactive experiences that keep guests engaged, entertained and connected throughout your event. From instant photo booths and live caricature artists to interactive games, performers and creative engagement zones, we curate activities that complement your event theme and give guests memorable moments to take away.',
     image: '/images/Engagement activities.png',
     pointers: [
-      'Interactive Engagement',
-      'Customized Concepts',
-      'Pan-India Execution',
+      'Instant Photo Booths & Performers',
+      'Interactive Games & Challenges',
+      'Custom Engagement Concepts',
     ],
     features: [
-      'Employee Engagement Events',
-      'Interactive Brand Booths',
-      'Team Building & Offsites',
-      'Experiential Marketing Drives',
-      'Gamified Event Setup',
-      'On-Ground Engagement',
-    ],
-  },
-  {
-    id: 'weddings',
-    title: 'Weddings & Luxury Celebrations',
-    description:
-      'Crafting unforgettable, lavish wedding experiences and private celebrations with unmatched elegance.',
-    longDescription:
-      'We turn dream weddings and luxury celebrations into magnificent realities. From venue selection and theme design to entertainment curation, hospitality management, and flawless day-of coordination, we curate every element with precision, grandeur, and emotional resonance for you and your guests.',
-    image: '/images/Weddings.png',
-    pointers: [
-      'End-to-End Wedding Planning',
-      'Luxury Décor & Theme Styling',
-      'Destination Wedding Management',
-    ],
-    features: [
-      'Destination Wedding Planning',
-      'Theme & Floral Styling',
-      'Vendor & Hospitality Management',
-      'Artist & Entertainment Curation',
-      'Sangeet & Reception Production',
-      'Bespoke Guest Experiences',
+      'Instant Photo Booths',
+      'Live Artists & Performers',
+      'Interactive Games & Challenges',
+      'Live Printing & Personalisation',
+      'Creative Workshops & Activities',
+      'Customised Engagement Concepts',
     ],
   },
   {
     id: 'branding',
-    title: 'Branding & Visual Solutions',
+    title: 'Branding',
     description:
-      'Elevating brand identities through strategic visual communication, graphic design, and event branding.',
+      'High-visibility outdoor and transit branding across key consumer touchpoints to build reach and frequency.',
     longDescription:
-      'We craft compelling visual identity systems and event branding collaterals that resonate with your audience. From brand identity development, logos, and event collateral design to immersive digital graphics and environmental branding, we ensure consistent and captivating brand messaging across all touchpoints.',
+      'We take your brand beyond traditional media with high-visibility outdoor and transit branding across key consumer touchpoints. From hoardings and bus shelters to train, bus, auto and retail branding, we help brands build reach, frequency and strong local visibility through strategically planned outdoor campaigns.',
     image: '/images/Branding.png',
     pointers: [
-      '360° Brand Identity Design',
-      'Event & Environmental Branding',
-      'High-Impact Visual Collaterals',
+      'Hoardings & Outdoor Media',
+      'Railway, BEST & Transit Branding',
+      'Retail & High-Street Branding',
     ],
     features: [
-      'Brand Identity & Logo Design',
-      'Event Signage & Collaterals',
-      'Environmental & Spatial Branding',
-      'Digital & Social Media Assets',
-      'Brand Guidelines & Style Guides',
-      'Print & Promotional Material Design',
+      'Hoardings & Outdoor Media',
+      'Railway & BEST Branding',
+      'Auto & Cab Branding',
+      'Retail & Store Branding',
+      'Mall & High-Street Branding',
+      'Society & Residential Branding',
+    ],
+  },
+  {
+    id: 'weddings',
+    title: 'Wedding',
+    description:
+      'Creating beautifully curated wedding experiences tailored to your style, traditions and vision.',
+    longDescription:
+      'From intimate celebrations to grand destination weddings, we create beautifully curated wedding experiences tailored to your style, traditions and vision. From venue selection and décor to entertainment, guest management and on-ground execution, our team handles every detail to make your special celebrations seamless, memorable and stress-free.',
+    image: '/images/Weddings.png',
+    pointers: [
+      'Wedding Planning & Coordination',
+      'Venue Sourcing & Theme Décor',
+      'Hospitality & Logistics',
+    ],
+    features: [
+      'Wedding Planning & Coordination',
+      'Venue Sourcing & Management',
+      'Theme Décor, Mandap & Floral Styling',
+      'Entertainment & Artist Management',
+      'Wedding Photography & Videography',
+      'Guest Hospitality & Event Logistics',
+    ],
+  },
+  {
+    id: 'ai-films',
+    title: 'AI Films',
+    description:
+      'Using the power of AI filmmaking and creative technology to turn ideas into visually stunning cinematic experiences.',
+    longDescription:
+      'From personalised stories to cinematic brand films, we use the power of AI filmmaking and creative technology to turn ideas, memories and imagination into visually stunning experiences. Whether it’s your love story, a special invitation or a story you’ve always wanted to see on screen, we create personalised AI films that feel cinematic, emotional and uniquely yours.',
+    image: '/images/ai-films.png',
+    pointers: [
+      'Personalised Invitation Videos',
+      'AI Wedding & Couple Films',
+      'AI Brand & Storytelling Films',
+    ],
+    features: [
+      'Personalised Invitation Videos',
+      'Your Story Through AI',
+      'AI Wedding & Couple Films',
+      'AI Short Films & Storytelling',
+      'AI Brand Films & Advertisements',
+      'AI Social Media & Promotional Films',
     ],
   },
 ];

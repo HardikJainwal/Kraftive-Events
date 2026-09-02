@@ -17,11 +17,10 @@ export const siteConfig = {
     hours: 'Mon – Sat: 10 AM – 7 PM',
   },
   social: {
-    instagram: 'https://instagram.com/kraftiveevents',
-    facebook: 'https://facebook.com/kraftiveevents',
-    pinterest: 'https://pinterest.com/kraftiveevents',
-    twitter: 'https://twitter.com/kraftiveevents',
-    linkedin: 'https://linkedin.com/company/kraftiveevents',
+    instagram: 'https://www.instagram.com/kraftive_events/',
+    facebook: 'https://www.facebook.com/profile.php?id=61584206018149',
+    linkedin: 'https://www.linkedin.com/company/kraftive-events-media/?viewAsMember=true',
+    whatsapp: 'https://wa.me/919082097808',
   },
   hero: {
     eyebrow: 'Mumbai’s Leading Event Partner',
