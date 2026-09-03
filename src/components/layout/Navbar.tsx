@@ -13,6 +13,10 @@ export default function Navbar() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const pathname = usePathname();
 
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);

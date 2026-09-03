@@ -2,10 +2,16 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 
 export default function FloatingActions() {
+  const pathname = usePathname();
   const [isHoveredWhatsApp, setIsHoveredWhatsApp] = useState(false);
   const [isHoveredPlan, setIsHoveredPlan] = useState(false);
+
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   const whatsappUrl =
     'https://wa.me/919082097808?text=Hi%20Kraftive%20Events%2C%20I%20would%20like%20to%20inquire%20about%20planning%20an%20event.';

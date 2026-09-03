@@ -3,9 +3,11 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
-import { navItems, socialLinks } from '../../../data/navigation';
+import { footerNavItems, socialLinks } from '../../../data/navigation';
 import { siteConfig } from '../../../data/siteConfig';
 import { services } from '../../../data/services';
+
+import { usePathname } from 'next/navigation';
 
 const footerVariants = {
   hidden: { opacity: 0 },
@@ -57,7 +59,12 @@ const SocialIcon = ({ icon }: { icon: string }) => {
 };
 
 export default function Footer() {
+  const pathname = usePathname();
   const currentYear = new Date().getFullYear();
+
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   return (
     <footer className="bg-warm-brown text-ivory/80 relative overflow-hidden">
@@ -114,7 +121,7 @@ export default function Footer() {
               Navigation
             </h3>
             <ul className="space-y-3">
-              {navItems.map((item) => (
+              {footerNavItems.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}

@@ -170,7 +170,7 @@ export const services: Service[] = [
       'High-visibility outdoor and transit branding across key consumer touchpoints to build reach and frequency.',
     longDescription:
       'We take your brand beyond traditional media with high-visibility outdoor and transit branding across key consumer touchpoints. From hoardings and bus shelters to train, bus, auto and retail branding, we help brands build reach, frequency and strong local visibility through strategically planned outdoor campaigns.',
-    image: '/images/Branding.png',
+    image: '/images/brand.PNG',
     pointers: [
       'Hoardings & Outdoor Media',
       'Railway, BEST & Transit Branding',
@@ -192,7 +192,7 @@ export const services: Service[] = [
       'Creating beautifully curated wedding experiences tailored to your style, traditions and vision.',
     longDescription:
       'From intimate celebrations to grand destination weddings, we create beautifully curated wedding experiences tailored to your style, traditions and vision. From venue selection and décor to entertainment, guest management and on-ground execution, our team handles every detail to make your special celebrations seamless, memorable and stress-free.',
-    image: '/images/Weddings.png',
+    image: '/images/wed.png',
     pointers: [
       'Wedding Planning & Coordination',
       'Venue Sourcing & Theme Décor',
@@ -214,7 +214,7 @@ export const services: Service[] = [
       'Using the power of AI filmmaking and creative technology to turn ideas into visually stunning cinematic experiences.',
     longDescription:
       'From personalised stories to cinematic brand films, we use the power of AI filmmaking and creative technology to turn ideas, memories and imagination into visually stunning experiences. Whether it’s your love story, a special invitation or a story you’ve always wanted to see on screen, we create personalised AI films that feel cinematic, emotional and uniquely yours.',
-    image: '/images/ai-films.png',
+    image: '/images/ai.PNG',
     pointers: [
       'Personalised Invitation Videos',
       'AI Wedding & Couple Films',

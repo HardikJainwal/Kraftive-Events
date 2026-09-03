@@ -1,0 +1,44 @@
+[
+  {
+    "id": "blog-3",
+    "slug": "btl-activations-that-convert-brand-engagement-strategies",
+    "title": "BTL Activations That Convert: How to Build Unforgettable On-Ground Experiences",
+    "excerpt": "Below-The-Line (BTL) marketing connects brands directly with consumers. Learn the core principles of high-converting experiential activations.",
+    "content": "Direct engagement builds brand loyalty faster than traditional advertising. BTL activations give consumers a hands-on experience with your product or service.\n\n### Interactive Experience Stations\nFrom AR photo booths to touch-screen product customization, interactivity keeps potential buyers engaged longer and creates shareable social moments.\n\n### Professional Brand Ambassadors\nYour on-ground team is the face of your brand. Trained, well-dressed manpower ensures customer queries are answered with professionalism and enthusiasm.\n\n### Measurable Engagement Metrics\nCollect instant feedback, lead signups, and social media shares via QR codes integrated directly into stall artwork and booth displays.",
+    "category": "BTL Activations",
+    "coverImage": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1200&q=80",
+    "author": "Kraftive Editorial",
+    "publishDate": "2026-03-01",
+    "readTime": "3 min read",
+    "status": "published",
+    "featured": false
+  },
+  {
+    "id": "blog-2",
+    "slug": "top-venue-selection-strategies-large-scale-exhibitions",
+    "title": "Strategic Venue Sourcing for Large-Scale Exhibitions & Brand Expos",
+    "excerpt": "Selecting the right venue determines the success of any exhibition. Here is Kraftive Events' guide to seating, booth flow, and technical feasibility.",
+    "content": "When planning a large-scale exhibition or trade show in major metro hubs like Mumbai or Delhi, logistics, venue acoustics, and floor planning play a pivotal role.\n\n### Venue Layout and Visitor Traffic Flow\nEnsure main aisles are spacious enough to accommodate peak visitor traffic without creating bottlenecks. Position anchor brand stalls at high-visibility corners while maintaining clear emergency egress routes.\n\n### Power & Rigging Infrastructure\nExhibitions demand substantial power distribution and overhead truss rigging for spotlight setups. Always audit electrical load capacities before finalizing booth placements.\n\n### Seamless Fabrication\nCustom stall fabrication requires early setup access. Ensure the venue offers dedicated loading docks and high-ceiling access points for heavy structural builds.",
+    "category": "Exhibitions & Expos",
+    "coverImage": "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=1200&q=80",
+    "author": "Kraftive Editorial",
+    "publishDate": "2026-02-28",
+    "readTime": "5 min read",
+    "status": "published",
+    "featured": false
+  },
+  {
+    "id": "blog-1",
+    "slug": "mastering-corporate-event-management-mumbai-2026",
+    "title": "Mastering Corporate Event Management: Key Trends Shaping 2026",
+    "excerpt": "Discover how corporate events in Mumbai are evolving with immersive stage design, hybrid tech integration, and curated guest experiences.",
+    "content": "Corporate events are no longer just business gatherings — they are powerful brand statements. In 2026, leading organizations across Mumbai and India are elevating their annual summits, product launches, and gala dinners into immersive multi-sensory experiences.\n\n### 1. Immersive Fabrication & Dynamic Stage Lighting\nModern venue setups rely heavily on custom fabrication, ultra-wide high-resolution LED walls, and synchronized architectural lighting. Clean geometric aesthetics paired with warm champagne and gold accents create an undeniable sense of luxury and sophistication.\n\n### 2. Streamlined Logistics & Tech Integration\nSeamless execution demands real-time guest registration, RFID badge scanning, and dedicated VIP hospitality lounges. Attendees expect smooth efficiency from their initial arrival to departure.\n\n### 3. Custom Gifting & Personalized Touches\nGeneric corporate giveaways are a thing of the past. Today's high-impact events incorporate custom artisanal hampers, personalized keepsakes, and curated takeaway gifts that resonate long after the event concludes.",
+    "category": "Corporate Events",
+    "coverImage": "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80",
+    "author": "Ashoutosh Sharma",
+    "publishDate": "2026-02-15",
+    "readTime": "4 min read",
+    "status": "published",
+    "featured": true
+  }
+]
