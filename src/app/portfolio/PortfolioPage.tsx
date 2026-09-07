@@ -84,7 +84,7 @@ export default function PortfolioPage() {
           </motion.div>
 
           {/* Masonry Grid */}
-          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 auto-rows-[280px]">
+          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-flow-dense gap-4 md:gap-6 auto-rows-[280px]">
             <AnimatePresence mode="popLayout">
               {filteredItems.map((item) => {
                 let spanClass = '';

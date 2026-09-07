@@ -6,7 +6,7 @@ import Link from 'next/link';
 import SectionHeading from '../ui/SectionHeading';
 import { portfolio } from '../../../data/portfolio';
 
-const previewItems = portfolio.slice(0, 6);
+const previewItems = portfolio.slice(0, 12);
 
 export default function PortfolioPreview() {
   return (
@@ -22,7 +22,7 @@ export default function PortfolioPreview() {
         />
 
         {/* Masonry Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 auto-rows-[250px] md:auto-rows-[280px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-flow-dense gap-4 md:gap-6 auto-rows-[250px] md:auto-rows-[280px]">
           {previewItems.map((item, i) => {
             // Determine grid span based on item.span
             let spanClass = '';
