@@ -105,10 +105,7 @@ export default function FeaturedCarousel() {
                             exit={{ opacity: 0, y: -10 }}
                             transition={{ duration: 0.4 }}
                           >
-                            <span className="text-gold text-xs font-semibold tracking-widest uppercase">
-                              {event.category}
-                            </span>
-                            <h3 className="font-display text-2xl md:text-3xl font-bold text-ivory mt-2">
+                            <h3 className="font-display text-2xl md:text-3xl font-bold text-ivory">
                               {event.title}
                             </h3>
                             <p className="text-ivory/60 text-sm mt-2 max-w-md">
