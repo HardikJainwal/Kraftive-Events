@@ -12,6 +12,7 @@ export default function InquiryModal() {
     phone: '',
     eventType: 'Corporate Events',
     otherEventType: '',
+    eventDate: '',
     guestCount: '50 - 150 Guests',
     notes: '',
   });
@@ -241,22 +242,37 @@ export default function InquiryModal() {
                     )}
                   </AnimatePresence>
 
-                  {/* Guest Count */}
-                  <div>
-                    <label className="block text-xs font-medium uppercase tracking-wider text-gold/90 mb-1.5">
-                      Estimated Attendees / Guests
-                    </label>
-                    <select
-                      name="guestCount"
-                      value={formData.guestCount}
-                      onChange={handleInputChange}
-                      className="w-full bg-charcoal border border-gold/20 focus:border-gold px-4 py-2.5 text-sm text-ivory outline-none transition-colors cursor-pointer"
-                    >
-                      <option value="Under 50 Guests">Under 50 Guests</option>
-                      <option value="50 - 150 Guests">50 - 150 Guests</option>
-                      <option value="150 - 500 Guests">150 - 500 Guests</option>
-                      <option value="500+ Guests">500+ Guests</option>
-                    </select>
+                  {/* Date & Guest Count grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-medium uppercase tracking-wider text-gold/90 mb-1.5">
+                        Target Event Date
+                      </label>
+                      <input
+                        type="date"
+                        name="eventDate"
+                        min={new Date().toISOString().split('T')[0]}
+                        value={formData.eventDate}
+                        onChange={handleInputChange}
+                        className="w-full bg-charcoal-light/30 border border-gold/20 focus:border-gold px-4 py-2.5 text-sm text-ivory placeholder:text-ivory/30 outline-none transition-colors [color-scheme:dark]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium uppercase tracking-wider text-gold/90 mb-1.5">
+                        Estimated Attendees / Guests
+                      </label>
+                      <select
+                        name="guestCount"
+                        value={formData.guestCount}
+                        onChange={handleInputChange}
+                        className="w-full bg-charcoal border border-gold/20 focus:border-gold px-4 py-2.5 text-sm text-ivory outline-none transition-colors cursor-pointer"
+                      >
+                        <option value="Under 50 Guests">Under 50 Guests</option>
+                        <option value="50 - 150 Guests">50 - 150 Guests</option>
+                        <option value="150 - 500 Guests">150 - 500 Guests</option>
+                        <option value="500+ Guests">500+ Guests</option>
+                      </select>
+                    </div>
                   </div>
 
                   {/* Message / Special Notes */}
@@ -382,6 +398,13 @@ export default function InquiryModal() {
                       <span className="text-charcoal/50 uppercase">EVENT CATEGORY:</span>
                       <span className="font-bold text-gold-dark">{selectedEvent}</span>
                     </div>
+
+                    {formData.eventDate && (
+                      <div className="flex justify-between border-b border-dashed border-charcoal/15 pb-2">
+                        <span className="text-charcoal/50 uppercase">TARGET EVENT DATE:</span>
+                        <span className="font-bold text-charcoal">{formData.eventDate}</span>
+                      </div>
+                    )}
 
                     <div className="flex justify-between border-b border-dashed border-charcoal/15 pb-2">
                       <span className="text-charcoal/50 uppercase">GUEST COUNT:</span>

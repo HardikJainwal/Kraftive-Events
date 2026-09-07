@@ -10,9 +10,9 @@ interface FormData {
   email: string;
   phone: string;
   eventType: string;
+  otherEventType: string;
   eventDate: string;
   guestCount: string;
-  budget: string;
   message: string;
 }
 
@@ -24,27 +24,20 @@ const eventTypes = [
   'Corporate Events',
   'Venue Sourcing',
   'BTL Activations',
-  'Stall & Fabrication',
+  'Exhibition & Fabrication',
   'Décor & Design',
   'Customised Gifting',
+  'Engagement Activities',
+  'Weddings & Luxury Celebrations',
+  'Branding & Visual Solutions',
   'Other',
 ];
 
-const budgetRanges = [
-  '$5,000 – $15,000',
-  '$15,000 – $30,000',
-  '$30,000 – $50,000',
-  '$50,000 – $100,000',
-  '$100,000+',
-  'Let\'s Discuss',
-];
-
 const guestRanges = [
-  '1 – 50',
-  '50 – 100',
-  '100 – 200',
-  '200 – 500',
-  '500+',
+  'Under 50 Guests',
+  '50 - 150 Guests',
+  '150 - 500 Guests',
+  '500+ Guests',
 ];
 
 // Isolated submission logic — connect to backend/email service here
@@ -65,17 +58,17 @@ export default function ContactPage() {
     email: '',
     phone: '',
     eventType: '',
+    otherEventType: '',
     eventDate: '',
     guestCount: '',
-    budget: '',
     message: '',
   });
   const [errors, setErrors] = useState<FormErrors>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitResult, setSubmitResult] = useState<{
-    success: boolean;
-    message: string;
-  } | null>(null);
+  const [step, setStep] = useState<'form' | 'printing' | 'receipt'>('form');
+  const [ticketDetails, setTicketDetails] = useState({
+    ticketId: '',
+    timestamp: '',
+  });
 
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -84,37 +77,66 @@ export default function ContactPage() {
   });
   const heroImgY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
 
+  const todayDate = new Date().toISOString().split('T')[0];
+
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
     if (!form.name.trim()) newErrors.name = 'Name is required';
     if (!form.email.trim()) newErrors.email = 'Email is required';
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
       newErrors.email = 'Please enter a valid email';
-    if (!form.eventType) newErrors.eventType = 'Please select an event type';
+    if (!form.eventType) newErrors.eventType = 'Please select an event category';
+    if (form.eventDate && form.eventDate < todayDate) {
+      newErrors.eventDate = 'Please select a future date (past dates not allowed)';
+    }
     if (!form.message.trim()) newErrors.message = 'Please tell us about your event';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-    setIsSubmitting(true);
-    const result = await submitForm(form);
-    setSubmitResult(result);
-    setIsSubmitting(false);
-    if (result.success) {
-      setForm({
-        name: '',
-        email: '',
-        phone: '',
-        eventType: '',
-        eventDate: '',
-        guestCount: '',
-        budget: '',
-        message: '',
-      });
-    }
+
+    // Generate unique inquiry ticket details
+    const randomNum = Math.floor(100000 + Math.random() * 900000);
+    const now = new Date();
+    const formattedDate = now.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    });
+    const formattedTime = now.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    });
+
+    setTicketDetails({
+      ticketId: `KE-2026-${randomNum}`,
+      timestamp: `${formattedDate} · ${formattedTime}`,
+    });
+
+    // Start machine printing effect transition
+    setStep('printing');
+    setTimeout(() => {
+      setStep('receipt');
+    }, 2200);
+  };
+
+  const resetForm = () => {
+    setForm({
+      name: '',
+      email: '',
+      phone: '',
+      eventType: '',
+      otherEventType: '',
+      eventDate: '',
+      guestCount: '',
+      message: '',
+    });
+    setErrors({});
+    setStep('form');
   };
 
   const updateField = (field: keyof FormData, value: string) => {
@@ -127,6 +149,11 @@ export default function ContactPage() {
       });
     }
   };
+
+  const selectedEvent =
+    form.eventType === 'Other' && form.otherEventType.trim()
+      ? form.otherEventType.trim()
+      : form.eventType;
 
   const inputBaseClass =
     'w-full bg-transparent border border-gold/20 px-4 py-3.5 text-charcoal text-sm font-body focus:border-gold focus:ring-0 focus:outline-none transition-colors duration-300 placeholder:text-charcoal-light/40';
@@ -178,7 +205,7 @@ export default function ContactPage() {
       <section className="section-padding bg-ivory">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16">
-            {/* Form */}
+            {/* Form & Ticket View Column */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -186,222 +213,253 @@ export default function ContactPage() {
               transition={{ duration: 0.8 }}
               className="lg:col-span-3"
             >
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-charcoal mb-2">
-                Tell Us About Your Event
-              </h2>
-              <p className="text-charcoal-light/60 text-sm mb-8">
-                Fill out the form below and we&apos;ll reach out within 24 hours to start bringing your vision to life.
-              </p>
-
-              {submitResult?.success ? (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="p-8 border border-gold/30 bg-gold/5 text-center"
-                >
-                  <span className="text-4xl mb-4 block">✨</span>
-                  <h3 className="font-display text-2xl font-bold text-charcoal mb-2">
-                    Thank You!
-                  </h3>
-                  <p className="text-charcoal-light/70">
-                    {submitResult.message}
+              {step === 'form' && (
+                <div>
+                  <h2 className="font-display text-2xl md:text-3xl font-bold text-charcoal mb-2">
+                    Tell Us About Your Event
+                  </h2>
+                  <p className="text-charcoal-light/60 text-sm mb-8">
+                    Fill out the form below and we&apos;ll generate your official inquiry pass right away.
                   </p>
-                </motion.div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-                  {/* Name & Email */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label
-                        htmlFor="contact-name"
-                        className="block text-xs font-semibold tracking-widest uppercase text-charcoal-light/60 mb-2"
-                      >
-                        Full Name *
-                      </label>
-                      <input
-                        id="contact-name"
-                        type="text"
-                        value={form.name}
-                        onChange={(e) => updateField('name', e.target.value)}
-                        placeholder="Your full name"
-                        className={`${inputBaseClass} ${errors.name ? errorClass : ''}`}
-                        required
-                      />
-                      {errors.name && (
-                        <p className="text-red-500 text-xs mt-1">{errors.name}</p>
-                      )}
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="contact-email"
-                        className="block text-xs font-semibold tracking-widest uppercase text-charcoal-light/60 mb-2"
-                      >
-                        Email Address *
-                      </label>
-                      <input
-                        id="contact-email"
-                        type="email"
-                        value={form.email}
-                        onChange={(e) => updateField('email', e.target.value)}
-                        placeholder="your@email.com"
-                        className={`${inputBaseClass} ${errors.email ? errorClass : ''}`}
-                        required
-                      />
-                      {errors.email && (
-                        <p className="text-red-500 text-xs mt-1">{errors.email}</p>
-                      )}
-                    </div>
-                  </div>
 
-                  {/* Phone & Event Type */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label
-                        htmlFor="contact-phone"
-                        className="block text-xs font-semibold tracking-widest uppercase text-charcoal-light/60 mb-2"
-                      >
-                        Phone Number
-                      </label>
-                      <input
-                        id="contact-phone"
-                        type="tel"
-                        value={form.phone}
-                        onChange={(e) => updateField('phone', e.target.value)}
-                        placeholder="+1 (555) 000-0000"
-                        className={inputBaseClass}
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="contact-event-type"
-                        className="block text-xs font-semibold tracking-widest uppercase text-charcoal-light/60 mb-2"
-                      >
-                        Event Type *
-                      </label>
-                      <div className="relative">
-                        <select
-                          id="contact-event-type"
-                          value={form.eventType}
-                          onChange={(e) =>
-                            updateField('eventType', e.target.value)
-                          }
-                          className={`${selectClass} ${errors.eventType ? errorClass : ''}`}
+                  <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+                    {/* Name & Email */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label
+                          htmlFor="contact-name"
+                          className="block text-xs font-semibold tracking-widest uppercase text-charcoal-light/60 mb-2"
+                        >
+                          Full Name *
+                        </label>
+                        <input
+                          id="contact-name"
+                          type="text"
+                          value={form.name}
+                          onChange={(e) => updateField('name', e.target.value)}
+                          placeholder="Your full name"
+                          className={`${inputBaseClass} ${errors.name ? errorClass : ''}`}
                           required
-                        >
-                          <option value="">Select event type</option>
-                          {eventTypes.map((type) => (
-                            <option key={type} value={type}>
-                              {type}
-                            </option>
-                          ))}
-                        </select>
-                        <svg
-                          className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold pointer-events-none"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M19 9l-7 7-7-7"
-                          />
-                        </svg>
+                        />
+                        {errors.name && (
+                          <p className="text-red-500 text-xs mt-1">{errors.name}</p>
+                        )}
                       </div>
-                      {errors.eventType && (
+                      <div>
+                        <label
+                          htmlFor="contact-email"
+                          className="block text-xs font-semibold tracking-widest uppercase text-charcoal-light/60 mb-2"
+                        >
+                          Email Address *
+                        </label>
+                        <input
+                          id="contact-email"
+                          type="email"
+                          value={form.email}
+                          onChange={(e) => updateField('email', e.target.value)}
+                          placeholder="your@email.com"
+                          className={`${inputBaseClass} ${errors.email ? errorClass : ''}`}
+                          required
+                        />
+                        {errors.email && (
+                          <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Phone & Event Type */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label
+                          htmlFor="contact-phone"
+                          className="block text-xs font-semibold tracking-widest uppercase text-charcoal-light/60 mb-2"
+                        >
+                          Phone / WhatsApp *
+                        </label>
+                        <input
+                          id="contact-phone"
+                          type="tel"
+                          value={form.phone}
+                          onChange={(e) => updateField('phone', e.target.value)}
+                          placeholder="+91 98765 43210"
+                          className={inputBaseClass}
+                        />
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="contact-event-type"
+                          className="block text-xs font-semibold tracking-widest uppercase text-charcoal-light/60 mb-2"
+                        >
+                          Event Category *
+                        </label>
+                        <div className="relative">
+                          <select
+                            id="contact-event-type"
+                            value={form.eventType}
+                            onChange={(e) =>
+                              updateField('eventType', e.target.value)
+                            }
+                            className={`${selectClass} ${errors.eventType ? errorClass : ''}`}
+                            required
+                          >
+                            <option value="">Select event category</option>
+                            {eventTypes.map((type) => (
+                              <option key={type} value={type}>
+                                {type}
+                              </option>
+                            ))}
+                          </select>
+                          <svg
+                            className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold pointer-events-none"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M19 9l-7 7-7-7"
+                            />
+                          </svg>
+                        </div>
+                        {errors.eventType && (
+                          <p className="text-red-500 text-xs mt-1">
+                            {errors.eventType}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Dynamic 'Other' Event Input */}
+                    {form.eventType === 'Other' && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="overflow-hidden mb-6"
+                      >
+                        <label
+                          htmlFor="contact-other-event-type"
+                          className="block text-xs font-semibold tracking-widest uppercase text-charcoal-light/60 mb-2"
+                        >
+                          Specify Event Details *
+                        </label>
+                        <input
+                          id="contact-other-event-type"
+                          type="text"
+                          value={form.otherEventType}
+                          onChange={(e) =>
+                            updateField('otherEventType', e.target.value)
+                          }
+                          placeholder="e.g. Private Yacht Party, Brand Launch"
+                          className={inputBaseClass}
+                          required={form.eventType === 'Other'}
+                        />
+                      </motion.div>
+                    )}
+
+                    {/* Date & Guest Count */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label
+                          htmlFor="contact-date"
+                          className="block text-xs font-semibold tracking-widest uppercase text-charcoal-light/60 mb-2"
+                        >
+                          Target Event Date
+                        </label>
+                        <input
+                          id="contact-date"
+                          type="date"
+                          min={todayDate}
+                          value={form.eventDate}
+                          onChange={(e) =>
+                            updateField('eventDate', e.target.value)
+                          }
+                          className={`${inputBaseClass} ${errors.eventDate ? errorClass : ''}`}
+                        />
+                        {errors.eventDate && (
+                          <p className="text-red-500 text-xs mt-1">
+                            {errors.eventDate}
+                          </p>
+                        )}
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="contact-guests"
+                          className="block text-xs font-semibold tracking-widest uppercase text-charcoal-light/60 mb-2"
+                        >
+                          Estimated Attendees / Guests
+                        </label>
+                        <div className="relative">
+                          <select
+                            id="contact-guests"
+                            value={form.guestCount}
+                            onChange={(e) =>
+                              updateField('guestCount', e.target.value)
+                            }
+                            className={selectClass}
+                          >
+                            <option value="">Estimated guests</option>
+                            {guestRanges.map((range) => (
+                              <option key={range} value={range}>
+                                {range}
+                              </option>
+                            ))}
+                          </select>
+                          <svg
+                            className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold pointer-events-none"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M19 9l-7 7-7-7"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Message */}
+                    <div>
+                      <label
+                        htmlFor="contact-message"
+                        className="block text-xs font-semibold tracking-widest uppercase text-charcoal-light/60 mb-2"
+                      >
+                        Special Requirements / Message *
+                      </label>
+                      <textarea
+                        id="contact-message"
+                        value={form.message}
+                        onChange={(e) => updateField('message', e.target.value)}
+                        placeholder="Describe your dream event — theme, vibe, must-haves, anything that inspires you..."
+                        rows={5}
+                        className={`${inputBaseClass} resize-none ${
+                          errors.message ? errorClass : ''
+                        }`}
+                        required
+                      />
+                      {errors.message && (
                         <p className="text-red-500 text-xs mt-1">
-                          {errors.eventType}
+                          {errors.message}
                         </p>
                       )}
                     </div>
-                  </div>
 
-                  {/* Date & Guest Count */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label
-                        htmlFor="contact-date"
-                        className="block text-xs font-semibold tracking-widest uppercase text-charcoal-light/60 mb-2"
-                      >
-                        Event Date
-                      </label>
-                      <input
-                        id="contact-date"
-                        type="date"
-                        value={form.eventDate}
-                        onChange={(e) =>
-                          updateField('eventDate', e.target.value)
-                        }
-                        className={inputBaseClass}
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="contact-guests"
-                        className="block text-xs font-semibold tracking-widest uppercase text-charcoal-light/60 mb-2"
-                      >
-                        Guest Count
-                      </label>
-                      <div className="relative">
-                        <select
-                          id="contact-guests"
-                          value={form.guestCount}
-                          onChange={(e) =>
-                            updateField('guestCount', e.target.value)
-                          }
-                          className={selectClass}
-                        >
-                          <option value="">Estimated guests</option>
-                          {guestRanges.map((range) => (
-                            <option key={range} value={range}>
-                              {range}
-                            </option>
-                          ))}
-                        </select>
-                        <svg
-                          className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold pointer-events-none"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M19 9l-7 7-7-7"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Budget */}
-                  <div>
-                    <label
-                      htmlFor="contact-budget"
-                      className="block text-xs font-semibold tracking-widest uppercase text-charcoal-light/60 mb-2"
+                    {/* Submit */}
+                    <motion.button
+                      type="submit"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full bg-gradient-to-r from-gold via-gold-light to-gold text-charcoal font-semibold text-sm tracking-widest uppercase px-8 py-4 border border-gold hover:opacity-95 transition-all duration-300 shadow-lg shadow-gold/10 cursor-pointer inline-flex items-center justify-center gap-2"
                     >
-                      Budget Range
-                    </label>
-                    <div className="relative">
-                      <select
-                        id="contact-budget"
-                        value={form.budget}
-                        onChange={(e) =>
-                          updateField('budget', e.target.value)
-                        }
-                        className={selectClass}
-                      >
-                        <option value="">Select budget range</option>
-                        {budgetRanges.map((range) => (
-                          <option key={range} value={range}>
-                            {range}
-                          </option>
-                        ))}
-                      </select>
+                      Submit & Generate Ticket
                       <svg
-                        className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold pointer-events-none"
+                        className="w-4 h-4"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -410,71 +468,179 @@ export default function ContactPage() {
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          d="M19 9l-7 7-7-7"
+                          d="M17 8l4 4m0 0l-4 4m4-4H3"
                         />
                       </svg>
-                    </div>
-                  </div>
+                    </motion.button>
+                  </form>
+                </div>
+              )}
 
-                  {/* Message */}
-                  <div>
-                    <label
-                      htmlFor="contact-message"
-                      className="block text-xs font-semibold tracking-widest uppercase text-charcoal-light/60 mb-2"
-                    >
-                      Tell Us Your Vision *
-                    </label>
-                    <textarea
-                      id="contact-message"
-                      value={form.message}
-                      onChange={(e) => updateField('message', e.target.value)}
-                      placeholder="Describe your dream event — theme, vibe, must-haves, anything that inspires you..."
-                      rows={5}
-                      className={`${inputBaseClass} resize-none ${
-                        errors.message ? errorClass : ''
-                      }`}
-                      required
+              {/* Printing Machine Loading Animation State */}
+              {step === 'printing' && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="py-16 text-center flex flex-col items-center justify-center bg-charcoal p-8 border border-gold/30 shadow-xl"
+                >
+                  {/* Simulated printer head slot */}
+                  <div className="w-56 h-2.5 bg-charcoal-light border border-gold/40 rounded-full relative overflow-hidden mb-8">
+                    <motion.div
+                      animate={{ x: [-100, 100, -100] }}
+                      transition={{ repeat: Infinity, duration: 1.2, ease: 'linear' }}
+                      className="w-14 h-full bg-gold shadow-[0_0_12px_#C6A962]"
                     />
-                    {errors.message && (
-                      <p className="text-red-500 text-xs mt-1">
-                        {errors.message}
-                      </p>
-                    )}
                   </div>
 
-                  {/* Submit */}
-                  <motion.button
-                    type="submit"
-                    disabled={isSubmitting}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full md:w-auto bg-gold text-charcoal font-semibold text-sm tracking-widest uppercase px-12 py-4 border border-gold hover:bg-gold-dark hover:border-gold-dark transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer inline-flex items-center justify-center gap-2"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <span className="w-4 h-4 border-2 border-charcoal/30 border-t-charcoal rounded-full animate-spin" />
-                        Sending...
-                      </>
-                    ) : (
-                      <>
-                        Let&apos;s Plan Something Extraordinary
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M17 8l4 4m0 0l-4 4m4-4H3"
-                          />
-                        </svg>
-                      </>
-                    )}
-                  </motion.button>
-                </form>
+                  <motion.div
+                    animate={{ y: [0, 8, 0] }}
+                    transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
+                    className="w-16 h-16 border-2 border-gold/30 border-t-gold rounded-full animate-spin mb-6"
+                  />
+
+                  <span className="text-gold font-mono text-xs font-semibold tracking-[0.3em] uppercase block animate-pulse">
+                    Printing Verification Ticket...
+                  </span>
+                  <p className="text-ivory/50 text-xs mt-2">
+                    Encrypting inquiry details & registering with director desk
+                  </p>
+                </motion.div>
+              )}
+
+              {/* Ticket Receipt View */}
+              {step === 'receipt' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  className="py-2"
+                >
+                  <div className="bg-[#FAF7F0] text-charcoal p-6 sm:p-8 relative shadow-2xl border-t-4 border-gold">
+                    {/* Top serrated ticket edge */}
+                    <div
+                      className="absolute -top-3 left-0 right-0 h-3"
+                      style={{
+                        backgroundImage: `radial-gradient(circle at 10px 0, transparent 6px, #FAF7F0 7px)`,
+                        backgroundSize: '20px 10px',
+                      }}
+                    />
+
+                    {/* Header */}
+                    <div className="flex items-start justify-between border-b border-charcoal/15 pb-4 mb-4">
+                      <div>
+                        <span className="font-display font-bold text-lg md:text-xl text-charcoal tracking-tight block">
+                          KRAFTIVE EVENTS
+                        </span>
+                        <span className="text-[10px] font-mono tracking-widest text-charcoal/60 uppercase">
+                          Official Inquiry Pass
+                        </span>
+                      </div>
+
+                      <div className="bg-gold/15 border border-gold/60 text-charcoal font-mono text-[10px] font-bold px-3 py-1 tracking-wider uppercase flex items-center gap-1">
+                        VERIFIED
+                      </div>
+                    </div>
+
+                    {/* Data Grid */}
+                    <div className="space-y-3 font-mono text-xs md:text-sm">
+                      <div className="flex justify-between border-b border-dashed border-charcoal/15 pb-2">
+                        <span className="text-charcoal/50 uppercase">TICKET NO:</span>
+                        <span className="font-bold text-charcoal">{ticketDetails.ticketId}</span>
+                      </div>
+
+                      <div className="flex justify-between border-b border-dashed border-charcoal/15 pb-2">
+                        <span className="text-charcoal/50 uppercase">DATE / TIME:</span>
+                        <span className="font-medium text-charcoal">{ticketDetails.timestamp}</span>
+                      </div>
+
+                      <div className="flex justify-between border-b border-dashed border-charcoal/15 pb-2">
+                        <span className="text-charcoal/50 uppercase">CLIENT NAME:</span>
+                        <span className="font-bold text-charcoal">{form.name}</span>
+                      </div>
+
+                      <div className="flex justify-between border-b border-dashed border-charcoal/15 pb-2">
+                        <span className="text-charcoal/50 uppercase">EMAIL:</span>
+                        <span className="font-medium text-charcoal">{form.email}</span>
+                      </div>
+
+                      {form.phone && (
+                        <div className="flex justify-between border-b border-dashed border-charcoal/15 pb-2">
+                          <span className="text-charcoal/50 uppercase">CONTACT:</span>
+                          <span className="font-medium text-charcoal">{form.phone}</span>
+                        </div>
+                      )}
+
+                      <div className="flex justify-between border-b border-dashed border-charcoal/15 pb-2">
+                        <span className="text-charcoal/50 uppercase">EVENT CATEGORY:</span>
+                        <span className="font-bold text-gold-dark">{selectedEvent}</span>
+                      </div>
+
+                      {form.eventDate && (
+                        <div className="flex justify-between border-b border-dashed border-charcoal/15 pb-2">
+                          <span className="text-charcoal/50 uppercase">TARGET EVENT DATE:</span>
+                          <span className="font-bold text-charcoal">{form.eventDate}</span>
+                        </div>
+                      )}
+
+                      {form.guestCount && (
+                        <div className="flex justify-between border-b border-dashed border-charcoal/15 pb-2">
+                          <span className="text-charcoal/50 uppercase">GUEST COUNT:</span>
+                          <span className="font-medium text-charcoal">{form.guestCount}</span>
+                        </div>
+                      )}
+
+                      {form.message && (
+                        <div className="pt-1">
+                          <span className="text-charcoal/50 uppercase block text-[10px] mb-0.5">NOTES:</span>
+                          <p className="text-[11px] md:text-xs font-sans text-charcoal/80 italic leading-snug">
+                            "{form.message}"
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Barcode graphic */}
+                    <div className="mt-6 pt-4 border-t border-charcoal/20 text-center">
+                      <div className="flex justify-center items-center gap-1 h-10 opacity-80">
+                        {[3, 1, 4, 2, 5, 1, 3, 2, 4, 1, 6, 2, 3, 1, 4, 2, 5, 1, 3, 2, 4, 2, 1, 4].map((w, i) => (
+                          <div key={i} className="bg-charcoal h-full" style={{ width: `${w}px` }} />
+                        ))}
+                      </div>
+                      <span className="text-[9px] font-mono tracking-[0.3em] text-charcoal/60 uppercase block mt-1">
+                        *{ticketDetails.ticketId}*
+                      </span>
+                    </div>
+
+                    {/* Bottom serrated ticket edge */}
+                    <div
+                      className="absolute -bottom-3 left-0 right-0 h-3 rotate-180"
+                      style={{
+                        backgroundImage: `radial-gradient(circle at 10px 0, transparent 6px, #FAF7F0 7px)`,
+                        backgroundSize: '20px 10px',
+                      }}
+                    />
+                  </div>
+
+                  <p className="text-center text-charcoal-light/70 text-xs sm:text-sm mt-6 mb-4">
+                    Thank you! Our event director will review your ticket and reach out via WhatsApp / Email shortly.
+                  </p>
+
+                  <div className="flex gap-4">
+                    <button
+                      onClick={() => window.print()}
+                      className="flex-1 bg-charcoal text-ivory border border-charcoal hover:bg-transparent hover:text-charcoal text-xs font-semibold uppercase tracking-wider py-3.5 transition-colors cursor-pointer"
+                    >
+                      Print Ticket
+                    </button>
+                    <button
+                      onClick={resetForm}
+                      className="flex-1 bg-gold text-charcoal font-semibold text-xs uppercase tracking-wider py-3.5 hover:bg-gold-light transition-colors cursor-pointer"
+                    >
+                      Submit Another Inquiry
+                    </button>
+                  </div>
+                </motion.div>
               )}
             </motion.div>
 
@@ -591,36 +757,19 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              {/* Map placeholder */}
-              <div className="relative aspect-[4/3] bg-cream border border-gold/10 overflow-hidden">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <svg
-                      className="w-8 h-8 text-gold/40 mx-auto mb-2"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={1}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
-                      />
-                    </svg>
-                    <p className="text-charcoal-light/40 text-xs tracking-widest uppercase">
-                      Map Embed
-                    </p>
-                    <p className="text-charcoal-light/30 text-xs mt-1">
-                      Replace with Google Maps
-                    </p>
-                  </div>
-                </div>
+              {/* Google Maps Embed */}
+              <div className="relative aspect-[4/3] bg-cream border border-gold/20 overflow-hidden shadow-md">
+                <iframe
+                  src="https://maps.google.com/maps?q=Office+No.+129,+Master+Mind,+The+Royal+Palms,+Goregaon,+Mumbai,+Maharashtra+400065&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Kraftive Events Office Location - Master Mind, Goregaon, Mumbai"
+                  className="w-full h-full border-0"
+                />
               </div>
 
               {/* Quick CTA */}
