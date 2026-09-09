@@ -246,7 +246,7 @@ export default function InquiryModal() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-medium uppercase tracking-wider text-gold/90 mb-1.5">
-                        Target Event Date
+                        Event Date
                       </label>
                       <input
                         type="date"
@@ -401,7 +401,7 @@ export default function InquiryModal() {
 
                     {formData.eventDate && (
                       <div className="flex justify-between border-b border-dashed border-charcoal/15 pb-2">
-                        <span className="text-charcoal/50 uppercase">TARGET EVENT DATE:</span>
+                        <span className="text-charcoal/50 uppercase"> EVENT DATE:</span>
                         <span className="font-bold text-charcoal">{formData.eventDate}</span>
                       </div>
                     )}

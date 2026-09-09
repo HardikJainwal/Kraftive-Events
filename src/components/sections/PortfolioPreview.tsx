@@ -21,74 +21,68 @@ export default function PortfolioPreview() {
           subtitle="Browse our collection of meticulously crafted celebrations — each one a unique story of beauty, joy, and extraordinary attention to detail."
         />
 
-        {/* Masonry Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-flow-dense gap-4 md:gap-6 auto-rows-[250px] md:auto-rows-[280px]">
-          {previewItems.map((item, i) => {
-            // Determine grid span based on item.span
-            let spanClass = '';
-            if (item.span === 'tall') spanClass = 'row-span-2';
-            else if (item.span === 'wide')
-              spanClass = 'md:col-span-2';
-            else if (item.span === 'large')
-              spanClass = 'md:col-span-2 row-span-2';
-
-            return (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-50px' }}
-                transition={{ delay: i * 0.08, duration: 0.6 }}
-                className={`relative group overflow-hidden cursor-pointer ${spanClass}`}
-              >
+        {/* Portfolio Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {previewItems.map((item, i) => (
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ delay: i * 0.08, duration: 0.6 }}
+              className="relative group overflow-hidden cursor-pointer bg-charcoal rounded-lg border border-gold/15 hover:border-gold/50 transition-all duration-300 flex flex-col"
+            >
+              <div className="relative w-full aspect-[4/3] bg-charcoal/90 overflow-hidden flex items-center justify-center p-2">
                 <Image
                   src={item.image}
                   alt={item.title}
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="object-contain transition-transform duration-700 group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
+              </div>
 
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                {/* Content */}
-                <div className="absolute inset-0 flex flex-col justify-end p-5 md:p-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                  <h3 className="font-display text-lg md:text-xl font-bold text-ivory">
+              {/* Content */}
+              <div className="p-5 bg-charcoal border-t border-gold/10 flex flex-col justify-between flex-grow">
+                <div>
+                  <span className="text-gold text-[10px] font-semibold tracking-widest uppercase">
+                    {item.category}
+                  </span>
+                  <h3 className="font-display text-base md:text-lg font-bold text-ivory mt-1 group-hover:text-gold transition-colors">
                     {item.title}
                   </h3>
-                  <p className="text-ivory/50 text-xs mt-1">
+                  <p className="text-ivory/60 text-xs mt-1">
                     {item.location} · {item.year}
                   </p>
-                  <span className="mt-3 text-ivory/80 text-xs font-semibold tracking-widest uppercase flex items-center gap-1">
-                    View Project
-                    <svg
-                      className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
-                    </svg>
-                  </span>
                 </div>
+                <span className="mt-4 text-gold text-xs font-semibold tracking-widest uppercase flex items-center gap-1">
+                  View Project
+                  <svg
+                    className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </span>
+              </div>
 
-                {/* Gold bottom accent on hover */}
-                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gold scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+              {/* Gold bottom accent on hover */}
+              <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gold scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
 
-                <Link
-                  href="/portfolio"
-                  className="absolute inset-0 z-10"
-                  aria-label={`View ${item.title}`}
-                />
-              </motion.div>
-            );
-          })}
+              <Link
+                href="/portfolio"
+                className="absolute inset-0 z-10"
+                aria-label={`View ${item.title}`}
+              />
+            </motion.div>
+          ))}
         </div>
 
         {/* View All CTA */}

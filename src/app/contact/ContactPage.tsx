@@ -366,7 +366,7 @@ export default function ContactPage() {
                           htmlFor="contact-date"
                           className="block text-xs font-semibold tracking-widest uppercase text-charcoal-light/60 mb-2"
                         >
-                          Target Event Date
+                        Event Date
                         </label>
                         <input
                           id="contact-date"
@@ -578,7 +578,7 @@ export default function ContactPage() {
 
                       {form.eventDate && (
                         <div className="flex justify-between border-b border-dashed border-charcoal/15 pb-2">
-                          <span className="text-charcoal/50 uppercase">TARGET EVENT DATE:</span>
+                          <span className="text-charcoal/50 uppercase">EVENT DATE:</span>
                           <span className="font-bold text-charcoal">{form.eventDate}</span>
                         </div>
                       )}

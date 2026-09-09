@@ -29,7 +29,7 @@ export default function PortfolioPage() {
       <section ref={heroRef} className="relative h-[60vh] min-h-[400px] overflow-hidden flex items-end">
         <motion.div style={{ y: heroImgY }} className="absolute inset-0 w-full h-[130%] -top-[15%]">
           <Image
-            src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=1600&q=80"
+            src="/images/portfolio-banner.png"
             alt="Celebration event"
             fill
             className="object-cover"
@@ -83,55 +83,54 @@ export default function PortfolioPage() {
             ))}
           </motion.div>
 
-          {/* Masonry Grid */}
-          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-flow-dense gap-4 md:gap-6 auto-rows-[280px]">
+          {/* Portfolio Grid */}
+          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <AnimatePresence mode="popLayout">
-              {filteredItems.map((item) => {
-                let spanClass = '';
-                if (item.span === 'tall') spanClass = 'row-span-2';
-                else if (item.span === 'wide') spanClass = 'md:col-span-2';
-                else if (item.span === 'large') spanClass = 'md:col-span-2 row-span-2';
-
-                return (
-                  <motion.div
-                    key={item.id}
-                    layout
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.4 }}
-                    className={`relative group overflow-hidden cursor-pointer ${spanClass}`}
-                    onClick={() => setSelectedProject(item)}
-                  >
+              {filteredItems.map((item) => (
+                <motion.div
+                  key={item.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4 }}
+                  className="relative group overflow-hidden cursor-pointer bg-charcoal rounded-lg border border-gold/15 hover:border-gold/50 transition-all duration-300 flex flex-col"
+                  onClick={() => setSelectedProject(item)}
+                >
+                  <div className="relative w-full aspect-[4/3] bg-charcoal/90 overflow-hidden flex items-center justify-center p-2">
                     <Image
                       src={item.image}
                       alt={item.title}
                       fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      className="object-contain transition-transform duration-700 group-hover:scale-105"
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </div>
 
-                    {/* Hover content */}
-                    <div className="absolute inset-0 flex flex-col justify-end p-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                      <h3 className="font-display text-xl md:text-2xl font-bold text-ivory">
+                  {/* Card Info Banner */}
+                  <div className="p-5 bg-charcoal border-t border-gold/10 flex flex-col justify-between flex-grow">
+                    <div>
+                      <span className="text-gold text-[10px] font-semibold tracking-widest uppercase">
+                        {item.category}
+                      </span>
+                      <h3 className="font-display text-base md:text-lg font-bold text-ivory mt-1 group-hover:text-gold transition-colors">
                         {item.title}
                       </h3>
-                      <p className="text-ivory/50 text-sm mt-1">
+                      <p className="text-ivory/60 text-xs mt-1">
                         {item.location} · {item.year}
                       </p>
-                      <span className="mt-3 text-ivory/80 text-xs font-semibold tracking-widest uppercase flex items-center gap-1">
-                        View Details
-                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
-                      </span>
                     </div>
+                    <span className="mt-4 text-gold text-xs font-semibold tracking-widest uppercase flex items-center gap-1">
+                      View Details
+                      <svg className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </span>
+                  </div>
 
-                    <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gold scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-                  </motion.div>
-                );
-              })}
+                  <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gold scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+                </motion.div>
+              ))}
             </AnimatePresence>
           </motion.div>
         </div>
@@ -155,12 +154,12 @@ export default function PortfolioPage() {
               className="bg-ivory max-w-4xl w-full max-h-[85vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="relative aspect-[16/9]">
+              <div className="relative aspect-[16/9] bg-charcoal">
                 <Image
                   src={selectedProject.image}
                   alt={selectedProject.title}
                   fill
-                  className="object-cover"
+                  className="object-contain"
                 />
                 <button
                   onClick={() => setSelectedProject(null)}
