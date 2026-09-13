@@ -32,12 +32,12 @@ export default function PortfolioPreview() {
               transition={{ delay: i * 0.08, duration: 0.6 }}
               className="relative group overflow-hidden cursor-pointer bg-charcoal rounded-lg border border-gold/15 hover:border-gold/50 transition-all duration-300 flex flex-col"
             >
-              <div className="relative w-full aspect-[4/3] bg-charcoal/90 overflow-hidden flex items-center justify-center p-2">
+              <div className="relative w-full aspect-[3/2] overflow-hidden">
                 <Image
                   src={item.image}
                   alt={item.title}
                   fill
-                  className="object-contain transition-transform duration-700 group-hover:scale-105"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
               </div>
@@ -46,7 +46,7 @@ export default function PortfolioPreview() {
               <div className="p-5 bg-charcoal border-t border-gold/10 flex flex-col justify-between flex-grow">
                 <div>
                   <span className="text-gold text-[10px] font-semibold tracking-widest uppercase">
-                    {item.category}
+                    {item.tag}
                   </span>
                   <h3 className="font-display text-base md:text-lg font-bold text-ivory mt-1 group-hover:text-gold transition-colors">
                     {item.title}

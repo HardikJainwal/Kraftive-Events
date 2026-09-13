@@ -72,11 +72,10 @@ export default function PortfolioPage() {
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-5 py-2.5 text-sm font-medium tracking-wide uppercase transition-all duration-300 border cursor-pointer ${
-                  activeCategory === cat
+                className={`px-5 py-2.5 text-sm font-medium tracking-wide uppercase transition-all duration-300 border cursor-pointer ${activeCategory === cat
                     ? 'bg-gold text-charcoal border-gold'
                     : 'bg-transparent text-charcoal-light border-gold/20 hover:border-gold/50 hover:text-gold'
-                }`}
+                  }`}
               >
                 {cat}
               </button>
@@ -97,12 +96,12 @@ export default function PortfolioPage() {
                   className="relative group overflow-hidden cursor-pointer bg-charcoal rounded-lg border border-gold/15 hover:border-gold/50 transition-all duration-300 flex flex-col"
                   onClick={() => setSelectedProject(item)}
                 >
-                  <div className="relative w-full aspect-[4/3] bg-charcoal/90 overflow-hidden flex items-center justify-center p-2">
+                  <div className="relative w-full aspect-[3/2] overflow-hidden">
                     <Image
                       src={item.image}
                       alt={item.title}
                       fill
-                      className="object-contain transition-transform duration-700 group-hover:scale-105"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
                   </div>
@@ -111,7 +110,7 @@ export default function PortfolioPage() {
                   <div className="p-5 bg-charcoal border-t border-gold/10 flex flex-col justify-between flex-grow">
                     <div>
                       <span className="text-gold text-[10px] font-semibold tracking-widest uppercase">
-                        {item.category}
+                        {item.tag}
                       </span>
                       <h3 className="font-display text-base md:text-lg font-bold text-ivory mt-1 group-hover:text-gold transition-colors">
                         {item.title}
@@ -154,12 +153,12 @@ export default function PortfolioPage() {
               className="bg-ivory max-w-4xl w-full max-h-[85vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="relative aspect-[16/9] bg-charcoal">
+              <div className="relative aspect-[16/9] overflow-hidden">
                 <Image
                   src={selectedProject.image}
                   alt={selectedProject.title}
                   fill
-                  className="object-contain"
+                  className="object-cover"
                 />
                 <button
                   onClick={() => setSelectedProject(null)}
@@ -171,7 +170,7 @@ export default function PortfolioPage() {
               </div>
               <div className="p-8 md:p-12">
                 <span className="text-gold text-xs font-semibold tracking-widest uppercase">
-                  {selectedProject.category}
+                  {selectedProject.tag}
                 </span>
                 <h2 className="font-display text-3xl md:text-4xl font-bold text-charcoal mt-2 mb-4">
                   {selectedProject.title}
@@ -182,9 +181,11 @@ export default function PortfolioPage() {
                   <span>{selectedProject.year}</span>
                 </div>
                 <div className="w-12 h-[2px] bg-gradient-to-r from-gold to-gold-muted mb-6" />
-                <p className="text-charcoal-light/70 text-base md:text-lg leading-relaxed mb-8">
-                  {selectedProject.description}
-                </p>
+                <div className="text-charcoal-light/70 text-base md:text-lg leading-relaxed mb-8 space-y-4">
+                  {selectedProject.description.split('\n\n').map((para, idx) => (
+                    <p key={idx}>{para}</p>
+                  ))}
+                </div>
                 <Button variant="primary" href="/contact">
                   Plan a Similar Event
                 </Button>
