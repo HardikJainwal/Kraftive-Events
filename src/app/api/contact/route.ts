@@ -116,49 +116,119 @@ SPECIAL NOTES:
 ==================================================
 `;
 
-    // Configure Mail Transport
-    const host = process.env.SMTP_HOST;
-    const user = process.env.SMTP_USER;
-    const pass = process.env.SMTP_PASS;
-    const port = Number(process.env.SMTP_PORT) || 465;
+    let emailSent = false;
+    let emailError: string | null = null;
+    let attemptedResend = false;
 
-    if (host && user && pass) {
-      const transporter = nodemailer.createTransport({
-        host,
-        port,
-        secure: process.env.SMTP_SECURE !== 'false', // true for 465, false for other ports
-        auth: {
-          user,
-          pass,
-        },
-      });
+    // Option A: Use Resend API with verified kraftiveevents.com domain
+    const resendApiKey = process.env.RESEND_API_KEY;
 
-      await transporter.sendMail({
-        from: `"Kraftive Events Website" <${user}>`,
-        to: recipientEmail,
-        cc: ccEmail,
-        replyTo: email || undefined,
-        subject: `[New Inquiry ${ticketId || ''}] ${category} - ${name}`,
-        text: textContent,
-        html: htmlContent,
-      });
+    if (resendApiKey) {
+      attemptedResend = true;
+      try {
+        // Try verified domain sender first
+        let resendRes = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${resendApiKey.trim()}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            from: 'Kraftive Events <inquiries@kraftiveevents.com>',
+            to: [recipientEmail],
+            reply_to: email || undefined,
+            subject: `[New Inquiry ${ticketId || ''}] ${category} - ${name}`,
+            html: htmlContent,
+            text: textContent,
+          }),
+        });
 
-      console.log(`[Contact API] Email successfully sent to ${recipientEmail} for ticket ${ticketId}`);
-    } else {
-      console.warn(
-        `[Contact API] SMTP credentials missing in .env.local. Inquiry logged to console for ${name} (${ticketId}). Add SMTP_HOST, SMTP_USER, SMTP_PASS to send live emails.`
-      );
+        let resendData = await resendRes.json();
+
+        // If domain is still pending DNS propagation, fallback to onboarding sender
+        if (!resendRes.ok && (resendData.message?.includes('not verified') || resendData.message?.includes('testing emails'))) {
+          console.warn('[Contact API] Domain DNS pending propagation. Fallback to onboarding sender...');
+          const fallbackTo = resendData.message?.includes('testing emails') ? ['hardik.dev.testing@gmail.com'] : [recipientEmail];
+          resendRes = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${resendApiKey.trim()}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              from: 'Kraftive Events Website <onboarding@resend.dev>',
+              to: fallbackTo,
+              reply_to: email || undefined,
+              subject: `[New Inquiry ${ticketId || ''}] ${category} - ${name}`,
+              html: htmlContent,
+              text: textContent,
+            }),
+          });
+          resendData = await resendRes.json();
+        }
+
+        if (resendRes.ok && resendData.id) {
+          emailSent = true;
+          console.log(`[Contact API] Resend email successfully sent (${resendData.id})`);
+        } else {
+          emailError = `Resend API Error: ${resendData.message || JSON.stringify(resendData)}`;
+          console.error('[Contact API Resend Error]:', resendData);
+        }
+      } catch (resendErr: any) {
+        emailError = `Resend Fetch Error: ${resendErr?.message || String(resendErr)}`;
+        console.error('[Contact API Resend Fetch Error]:', resendErr);
+      }
+    }
+
+    // Option B: Fallback to SMTP (Nodemailer) if Resend failed or is unconfigured
+    if (!emailSent && !attemptedResend && process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
+      try {
+        const host = process.env.SMTP_HOST;
+        const user = process.env.SMTP_USER;
+        const pass = process.env.SMTP_PASS;
+        const port = Number(process.env.SMTP_PORT) || 587;
+        const isSecure = process.env.SMTP_SECURE === 'true' || port === 465;
+
+        const transporter = nodemailer.createTransport({
+          host,
+          port,
+          secure: isSecure,
+          auth: { user, pass },
+          requireTLS: !isSecure,
+          tls: { rejectUnauthorized: false },
+        });
+
+        await transporter.sendMail({
+          from: `"Kraftive Events Website" <${user}>`,
+          to: recipientEmail,
+          cc: ccEmail,
+          replyTo: email || undefined,
+          subject: `[New Inquiry ${ticketId || ''}] ${category} - ${name}`,
+          text: textContent,
+          html: htmlContent,
+        });
+
+        emailSent = true;
+        console.log(`[Contact API] SMTP Email successfully sent to ${recipientEmail} for ticket ${ticketId}`);
+      } catch (mailErr: any) {
+        emailError = `SMTP Error: ${mailErr?.message || String(mailErr)}`;
+        console.error('[Contact API SMTP Error Detail]:', mailErr);
+      }
     }
 
     return NextResponse.json({
       success: true,
-      message: 'Inquiry received and sent successfully.',
+      emailSent,
+      emailError,
+      message: emailSent
+        ? 'Inquiry received and email dispatched.'
+        : 'Inquiry received and ticket generated.',
       ticketId,
     });
-  } catch (error) {
-    console.error('[Contact API Error]:', error);
+  } catch (error: any) {
+    console.error('[Contact API General Error]:', error);
     return NextResponse.json(
-      { error: 'Failed to process inquiry. Please try again or contact us directly.' },
+      { error: error?.message || 'Failed to process inquiry. Please try again or contact us directly.' },
       { status: 500 }
     );
   }

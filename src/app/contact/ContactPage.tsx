@@ -94,9 +94,12 @@ export default function ContactPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
+
+    // Show printing animation state while API processes
+    setStep('printing');
 
     // Generate unique inquiry ticket details
     const randomNum = Math.floor(100000 + Math.random() * 900000);
@@ -120,23 +123,41 @@ export default function ContactPage() {
       timestamp,
     });
 
-    // Dispatch email notification to Ashoutosh@kraftiveevents.com
-    fetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...form,
-        ticketId,
-        timestamp,
-        source: 'Contact Page Form',
-      }),
-    }).catch((err) => console.error('Failed to submit inquiry:', err));
+    const startTime = Date.now();
 
-    // Start machine printing effect transition
-    setStep('printing');
-    setTimeout(() => {
-      setStep('receipt');
-    }, 2200);
+    try {
+      // Dispatch email notification to Ashoutosh@kraftiveevents.com
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...form,
+          ticketId,
+          timestamp,
+          source: 'Contact Page Form',
+        }),
+      });
+
+      const data = await res.json();
+
+      // Ensure printing animation displays for at least 1.5s for smooth UX
+      const elapsedTime = Date.now() - startTime;
+      if (elapsedTime < 1500) {
+        await new Promise((resolve) => setTimeout(resolve, 1500 - elapsedTime));
+      }
+
+      if (res.ok && data.success) {
+        // API hit successfully — display official receipt pass
+        setStep('receipt');
+      } else {
+        alert(data.error || 'Failed to submit inquiry. Please check details and try again.');
+        setStep('form');
+      }
+    } catch (err) {
+      console.error('Failed to submit inquiry:', err);
+      alert('Network error. Please check your connection and try again.');
+      setStep('form');
+    }
   };
 
   const resetForm = () => {
