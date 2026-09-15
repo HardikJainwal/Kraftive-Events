@@ -16,7 +16,7 @@ export const services: Service[] = [
       'Elevating your brand with impeccably planned corporate events that leave a lasting impression on every attendee.',
     longDescription:
       'From product launches, town halls and award nights to conferences, roadshows and team offsites — we design and execute corporate events that reflect your brand identity and create memorable audience experiences. With key elements managed in-house, we ensure greater control, seamless execution and consistent quality from concept to completion.',
-    image: '/images/Corporate events.png',
+    image: '/images/corporate_events.png',
     pointers: [
       'End to End Management',
       'Pan Indian Network',
@@ -38,7 +38,7 @@ export const services: Service[] = [
       'Finding the perfect space for your event — from intimate boardrooms to grand banquet halls across India.',
     longDescription:
       'We help you find the right venue for every event — from premium hotels and banquet halls to unique event spaces across Mumbai and India. Our team shortlists venues based on your event format, guest count, budget and brand requirements, while handling site visits, negotiations, vendor coordination and logistics to ensure a smooth, hassle-free experience.',
-    image: '/images/Venue.png',
+    image: '/images/venue.png',
     pointers: [
       'Transparent Pricing, 0% commission',
       'Verified Venue Partners',
@@ -60,7 +60,7 @@ export const services: Service[] = [
       'Creating high-impact below-the-line activations that drive genuine engagement with your target audience.',
     longDescription:
       'We create and execute high-impact BTL campaigns that take your brand directly to the consumer. From mall activations and retail promotions to experiential campaigns, sampling drives and RWA outreach, we combine creative concepts with strong on-ground execution to drive visibility, engagement and measurable consumer interaction.',
-    image: '/images/Btl activation.png',
+    image: '/images/btl_activation.png',
     pointers: [
       'Pan India Activation Network',
       'On Ground Execution Experts',
@@ -82,7 +82,7 @@ export const services: Service[] = [
       'Designing and fabricating eye-catching exhibition stalls and branded structures that command attention.',
     longDescription:
       'We design and build impactful exhibition stalls and branded spaces that attract attention, communicate your brand story and maximise visitor engagement. From creative 3D concepts and space planning to fabrication, branding and on-site installation, our in-house team manages the entire process for a seamless, execution-ready experience.',
-    image: '/images/Exhibiton final.png',
+    image: '/images/exhibiton_final.png',
     pointers: [
       'Creative Stall Design Concepts',
       'In House Fabrication Team',
@@ -104,7 +104,7 @@ export const services: Service[] = [
       'Transforming blank spaces into immersive brand environments with thoughtful, high-impact décor.',
     longDescription:
       'We create immersive event environments that bring your theme, brand and vision to life. From elegant floral styling and thematic décor to statement stages, ambient lighting and branded installations, our team manages the entire journey — from concept development and mood boards to final setup and dismantling.',
-    image: '/images/Decor.png',
+    image: '/images/decor.png',
     pointers: [
       'Theme Based Decor Solutions',
       'Every Detail Crafted To Perfection',
@@ -126,7 +126,7 @@ export const services: Service[] = [
       'Bespoke corporate and luxury event gifting curated to reflect your brand identity and express appreciation.',
     longDescription:
       'We design, curate, and deliver premium customised gifting solutions tailored for corporate milestones, client appreciation, employee recognition, festive occasions, and luxury events. From bespoke packaging and branded merchandise to artisanal hampers and personalized keepsakes, we handle conceptualization, sourcing, custom branding, packaging, and seamless pan-India delivery.',
-    image: '/images/Customised gifting.png',
+    image: '/images/customised_gifting.png',
     pointers: [
       'Customised Corporate Gifts',
       '3d Models, Merchandise & More..',
@@ -148,7 +148,7 @@ export const services: Service[] = [
       'Creating interactive experiences that keep guests engaged, entertained and connected throughout your event.',
     longDescription:
       'We create interactive experiences that keep guests engaged, entertained and connected throughout your event. From instant photo booths and live caricature artists to interactive games, performers and creative engagement zones, we curate activities that complement your event theme and give guests memorable moments to take away.',
-    image: '/images/Engagement activities.png',
+    image: '/images/engagement_activities.png',
     pointers: [
       'Instant Photo Booths & Performers',
       'Interactive Games & Challenges',
@@ -170,7 +170,7 @@ export const services: Service[] = [
       'High-visibility outdoor and transit branding across key consumer touchpoints to build reach and frequency.',
     longDescription:
       'We take your brand beyond traditional media with high-visibility outdoor and transit branding across key consumer touchpoints. From hoardings and bus shelters to train, bus, auto and retail branding, we help brands build reach, frequency and strong local visibility through strategically planned outdoor campaigns.',
-    image: '/images/brand.PNG',
+    image: '/images/brand.png',
     pointers: [
       'Hoardings & Outdoor Media',
       'Railway, BEST & Transit Branding',
@@ -214,7 +214,7 @@ export const services: Service[] = [
       'Using the power of AI filmmaking and creative technology to turn ideas into visually stunning cinematic experiences.',
     longDescription:
       'From personalised stories to cinematic brand films, we use the power of AI filmmaking and creative technology to turn ideas, memories and imagination into visually stunning experiences. Whether it’s your love story, a special invitation or a story you’ve always wanted to see on screen, we create personalised AI films that feel cinematic, emotional and uniquely yours.',
-    image: '/images/ai.PNG',
+    image: '/images/ai.png',
     pointers: [
       'Personalised Invitation Videos',
       'AI Wedding & Couple Films',
