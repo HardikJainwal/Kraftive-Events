@@ -73,10 +73,25 @@ export default function InquiryModal() {
       hour12: true,
     });
 
+    const ticketId = `KE-2026-${randomNum}`;
+    const timestamp = `${formattedDate} · ${formattedTime}`;
+
     setTicketDetails({
-      ticketId: `KE-2026-${randomNum}`,
-      timestamp: `${formattedDate} · ${formattedTime}`,
+      ticketId,
+      timestamp,
     });
+
+    // Dispatch email notification to Ashoutosh@kraftiveevents.com
+    fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...formData,
+        ticketId,
+        timestamp,
+        source: 'Quick Inquiry Modal',
+      }),
+    }).catch((err) => console.error('Failed to submit inquiry:', err));
 
     // Start machine printing effect transition
     setStep('printing');
