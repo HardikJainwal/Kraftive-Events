@@ -6,7 +6,7 @@ import InquiryModal from '@/components/ui/InquiryModal';
 import FloatingActions from '@/components/ui/FloatingActions';
 import SmoothScrollProvider from '@/components/providers/SmoothScrollProvider';
 import { siteConfig } from '../../data/siteConfig';
-import './globals.css';
+import './compiled.css';
 
 export const metadata: Metadata = {
   title: {
