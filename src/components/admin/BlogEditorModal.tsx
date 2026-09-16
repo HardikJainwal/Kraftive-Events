@@ -60,7 +60,7 @@ export default function BlogEditorModal({
       setExcerpt('');
       setCategory(CATEGORY_OPTIONS[0]);
       setAuthor('Ashoutosh Sharma');
-      setCoverImage('https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80');
+      setCoverImage('');
       setContent('');
       setStatus('published');
       setFeatured(false);
@@ -97,8 +97,15 @@ export default function BlogEditorModal({
 
       setCoverImage(data.url);
     } catch (err: unknown) {
-      if (err instanceof Error) setError(err.message);
-      else setError('Image upload failed');
+      console.warn('[Client Upload Fallback] Using FileReader base64 fallback:', err);
+      // Fallback to client-side Data URL reader
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === 'string') {
+          setCoverImage(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
     } finally {
       setUploadingImage(false);
     }

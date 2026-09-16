@@ -27,20 +27,24 @@ export async function POST(request: Request) {
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
+    const base64Image = `data:${file.type};base64,${buffer.toString('base64')}`;
 
-    const uploadsDir = path.join(process.cwd(), 'public', 'uploads', 'blogs');
-    await fs.mkdir(uploadsDir, { recursive: true });
+    // Try optional local disk write for dev environment
+    try {
+      const uploadsDir = path.join(process.cwd(), 'public', 'uploads', 'blogs');
+      await fs.mkdir(uploadsDir, { recursive: true });
 
-    const ext = path.extname(file.name) || '.jpg';
-    const sanitizedBase = path.basename(file.name, ext).replace(/[^\w-]/g, '_');
-    const filename = `${sanitizedBase}_${Date.now()}${ext}`;
-    const filePath = path.join(uploadsDir, filename);
+      const ext = path.extname(file.name) || '.jpg';
+      const sanitizedBase = path.basename(file.name, ext).replace(/[^\w-]/g, '_');
+      const filename = `${sanitizedBase}_${Date.now()}${ext}`;
+      const filePath = path.join(uploadsDir, filename);
 
-    await fs.writeFile(filePath, buffer);
+      await fs.writeFile(filePath, buffer);
+    } catch (fsErr) {
+      console.warn('[Upload Route] Serverless filesystem write bypassed:', fsErr);
+    }
 
-    const publicUrl = `/uploads/blogs/${filename}`;
-
-    return NextResponse.json({ success: true, url: publicUrl });
+    return NextResponse.json({ success: true, url: base64Image });
   } catch (error) {
     console.error('Image upload error:', error);
     return NextResponse.json(
