@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { playfair, dmSans } from '@/lib/fonts';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import InquiryModal from '@/components/ui/InquiryModal';
 import FloatingActions from '@/components/ui/FloatingActions';
 import SmoothScrollProvider from '@/components/providers/SmoothScrollProvider';
+import { GA_TRACKING_ID } from '@/lib/gtag';
 import { siteConfig } from '../../data/siteConfig';
 import './compiled.css';
 
@@ -44,6 +46,22 @@ export default function RootLayout({
       lang="en"
       className={`${playfair.variable} ${dmSans.variable} antialiased`}
     >
+      <head>
+        {/* Google tag (gtag.js) */}
+        <Script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-gtag" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_TRACKING_ID}');
+          `}
+        </Script>
+      </head>
       <body className="min-h-screen flex flex-col bg-ivory text-charcoal font-body">
         <SmoothScrollProvider>
           <a
@@ -64,3 +82,4 @@ export default function RootLayout({
     </html>
   );
 }
+

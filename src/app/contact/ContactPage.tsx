@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
+import { trackLeadConversion } from '@/lib/gtag';
 import { siteConfig } from '../../../data/siteConfig';
 
 interface FormData {
@@ -147,7 +148,8 @@ export default function ContactPage() {
       }
 
       if (res.ok && data.success) {
-        // API hit successfully — display official receipt pass
+        // API hit successfully — track Google Ads conversion and display official receipt pass
+        trackLeadConversion();
         setStep('receipt');
       } else {
         alert(data.error || 'Failed to submit inquiry. Please check details and try again.');

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { trackLeadConversion } from '@/lib/gtag';
 
 export default function InquiryModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -108,7 +109,8 @@ export default function InquiryModal() {
       }
 
       if (res.ok && data.success) {
-        // API hit successfully — display official receipt pass
+        // API hit successfully — track Google Ads conversion and display official receipt pass
+        trackLeadConversion();
         setStep('receipt');
       } else {
         alert(data.error || 'Failed to register inquiry. Please try again.');
