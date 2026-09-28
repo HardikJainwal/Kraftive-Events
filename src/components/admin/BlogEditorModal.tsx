@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { BlogPost, slugify } from '@/lib/blogs';
+import { renderFormattedContent } from '@/lib/markdown';
 
 interface BlogEditorModalProps {
   isOpen: boolean;
@@ -12,11 +13,16 @@ interface BlogEditorModalProps {
 
 const CATEGORY_OPTIONS = [
   'Corporate Events',
-  'Exhibitions & Expos',
+  'Venue Sourcing & Management',
   'BTL Activations',
+  'Exhibitions & Stall Fabrication',
   'Décor & Fabrications',
-  'Event Planning Tips',
+  'Customised Gifting',
+  'Engagement Activities',
+  'Branding & Outdoor Media',
   'Weddings & Galas',
+  'AI Films & Creative Tech',
+  'Event Planning Tips',
 ];
 
 export default function BlogEditorModal({
@@ -471,8 +477,8 @@ export default function BlogEditorModal({
                 </p>
               )}
 
-              <div className="prose prose-invert max-w-none text-[#FFFDF7]/90 text-sm leading-relaxed space-y-4 whitespace-pre-line">
-                {content || <span className="text-[#FAF6ED]/30 italic">No content written yet...</span>}
+              <div className="prose prose-invert max-w-none text-[#FFFDF7]/90 text-sm leading-relaxed space-y-4">
+                {content ? renderFormattedContent(content) : <span className="text-[#FAF6ED]/30 italic">No content written yet...</span>}
               </div>
             </div>
           )}

@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { getBlogBySlug, getPublishedBlogs } from '@/lib/blogs-server';
+import { renderFormattedContent } from '@/lib/markdown';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -46,49 +47,7 @@ export default async function BlogPostDetailPage({ params }: PageProps) {
     .filter((b) => b.id !== blog.id)
     .slice(0, 3);
 
-  // Markdown content parser helper
-  const renderFormattedContent = (content: string) => {
-    const paragraphs = content.split('\n\n');
-    return paragraphs.map((block, idx) => {
-      const trimmed = block.trim();
-      if (trimmed.startsWith('### ')) {
-        return (
-          <h3 key={idx} className="font-display text-2xl font-bold text-charcoal mt-8 mb-4">
-            {trimmed.replace('### ', '')}
-          </h3>
-        );
-      }
-      if (trimmed.startsWith('## ')) {
-        return (
-          <h2 key={idx} className="font-display text-3xl font-bold text-charcoal mt-10 mb-4 border-b border-gold/20 pb-2">
-            {trimmed.replace('## ', '')}
-          </h2>
-        );
-      }
-      if (trimmed.startsWith('> ')) {
-        return (
-          <blockquote key={idx} className="my-6 p-6 rounded-2xl bg-cream/70 border-l-4 border-gold text-charcoal-light italic font-serif text-lg leading-relaxed shadow-sm">
-            {trimmed.replace('> ', '')}
-          </blockquote>
-        );
-      }
-      if (trimmed.startsWith('- ')) {
-        const items = trimmed.split('\n').map((line) => line.replace(/^- /, '').trim());
-        return (
-          <ul key={idx} className="my-4 space-y-2 list-disc list-inside text-charcoal/80 text-base leading-relaxed pl-2">
-            {items.map((item, i) => (
-              <li key={i}>{item}</li>
-            ))}
-          </ul>
-        );
-      }
-      return (
-        <p key={idx} className="text-charcoal/80 text-base md:text-lg leading-relaxed mb-6">
-          {trimmed}
-        </p>
-      );
-    });
-  };
+
 
   return (
     <div className="pt-28 pb-24 min-h-screen bg-ivory">
