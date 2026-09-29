@@ -6,6 +6,11 @@ import { Metadata } from 'next';
 import { getBlogBySlug, getPublishedBlogs } from '@/lib/blogs-server';
 import { renderFormattedContent } from '@/lib/markdown';
 
+// Ensure new articles added via admin panel are always served fresh
+// instead of returning 404 because they weren't pre-rendered at build time.
+export const revalidate = 0;
+export const dynamicParams = true;
+
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
