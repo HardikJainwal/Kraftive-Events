@@ -21,6 +21,10 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
   const [editingBlog, setEditingBlog] = useState<BlogPost | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
+  const [activeTab, setActiveTab] = useState<'blogs' | 'queries'>('blogs');
+  const [queries, setQueries] = useState<any[]>([]);
+  const [queriesLoading, setQueriesLoading] = useState(false);
+
   const fetchBlogs = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -45,9 +49,26 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
     }
   }, [onLogout]);
 
+  const fetchQueries = useCallback(async () => {
+    setQueriesLoading(true);
+    try {
+      const res = await fetch('/api/admin/queries');
+      if (res.ok) {
+        const data = await res.json();
+        setQueries(data.queries || []);
+      }
+    } catch (err) {
+      console.error('Failed to fetch queries:', err);
+    } finally {
+      setQueriesLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
+    // Fetch both on mount so the counts are accurate
     fetchBlogs();
-  }, [fetchBlogs]);
+    fetchQueries();
+  }, [fetchBlogs, fetchQueries]);
 
   const handleCreateNew = () => {
     setEditingBlog(null);
@@ -192,73 +213,100 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
             </div>
           </div>
 
-          <div className="bg-[#1A1A1A] border border-amber-500/25 rounded-2xl p-6 relative overflow-hidden shadow-lg">
-            <div className="text-xs font-medium text-amber-400 uppercase tracking-wider mb-2">Drafts</div>
-            <div className="text-3xl font-serif font-bold text-[#FFFDF7]">{draftCount}</div>
+          <div className="bg-[#1A1A1A] border border-amber-500/25 rounded-2xl p-6 relative overflow-hidden shadow-lg cursor-pointer" onClick={() => setActiveTab('queries')}>
+            <div className="text-xs font-medium text-amber-400 uppercase tracking-wider mb-2">Total Queries</div>
+            <div className="text-3xl font-serif font-bold text-[#FFFDF7]">{queries.length > 0 ? queries.length : '-'}</div>
             <div className="absolute right-4 bottom-4 text-amber-500/10">
               <svg className="w-16 h-16" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
               </svg>
             </div>
           </div>
         </div>
 
-        {/* Action Controls Bar */}
-        <div className="bg-[#1A1A1A] border border-[#C6A962]/20 rounded-2xl p-5 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xl">
-          {/* Filters */}
-          <div className="w-full md:w-auto flex flex-col sm:flex-row items-center gap-3 flex-1">
-            {/* Search Input */}
-            <div className="relative w-full sm:w-72">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search articles by title or keyword..."
-                className="w-full bg-[#121212] border border-[#C6A962]/30 rounded-xl pl-9 pr-4 py-2.5 text-xs text-[#FFFDF7] placeholder-[#FFFDF7]/30 focus:outline-none focus:border-[#D4AF37]"
-              />
-              <svg className="w-4 h-4 text-[#C6A962]/60 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </div>
-
-            {/* Status Filter */}
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value as 'all' | 'published' | 'draft')}
-              className="w-full sm:w-auto bg-[#121212] border border-[#C6A962]/30 rounded-xl px-3 py-2.5 text-xs text-[#FFFDF7] focus:outline-none focus:border-[#D4AF37]"
-            >
-              <option value="all">All Statuses</option>
-              <option value="published">Published Only</option>
-              <option value="draft">Drafts Only</option>
-            </select>
-
-            {/* Category Filter */}
-            <select
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-              className="w-full sm:w-auto bg-[#121212] border border-[#C6A962]/30 rounded-xl px-3 py-2.5 text-xs text-[#FFFDF7] focus:outline-none focus:border-[#D4AF37]"
-            >
-              <option value="all">All Categories</option>
-              {categoriesList.map((cat) => (
-                <option key={cat} value={cat}>{cat}</option>
-              ))}
-            </select>
-          </div>
-
-          {/* Primary Action Button */}
+        {/* Tabs */}
+        <div className="flex space-x-4 border-b border-[#C6A962]/20">
           <button
-            onClick={handleCreateNew}
-            className="w-full md:w-auto bg-gradient-to-r from-[#D4AF37] via-[#C6A962] to-[#A8893A] text-[#121212] font-semibold text-xs uppercase tracking-wider py-3 px-6 rounded-xl hover:brightness-110 transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer flex-shrink-0"
+            onClick={() => setActiveTab('blogs')}
+            className={`pb-3 px-4 text-sm font-medium transition-colors border-b-2 ${
+              activeTab === 'blogs' 
+                ? 'border-[#D4AF37] text-[#D4AF37]' 
+                : 'border-transparent text-[#FAF6ED]/60 hover:text-[#FAF6ED]'
+            }`}
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 4v16m8-8H4" />
-            </svg>
-            <span>Create New Article</span>
+            Blog Posts
+          </button>
+          <button
+            onClick={() => setActiveTab('queries')}
+            className={`pb-3 px-4 text-sm font-medium transition-colors border-b-2 ${
+              activeTab === 'queries' 
+                ? 'border-[#D4AF37] text-[#D4AF37]' 
+                : 'border-transparent text-[#FAF6ED]/60 hover:text-[#FAF6ED]'
+            }`}
+          >
+            Client Queries
           </button>
         </div>
 
-        {/* Blog Posts Data Table */}
-        <div className="bg-[#1A1A1A] border border-[#C6A962]/20 rounded-2xl overflow-hidden shadow-xl">
+        {/* Action Controls Bar - Only show for blogs */}
+        {activeTab === 'blogs' && (
+          <div className="bg-[#1A1A1A] border border-[#C6A962]/20 rounded-2xl p-5 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xl">
+            {/* Filters */}
+            <div className="w-full md:w-auto flex flex-col sm:flex-row items-center gap-3 flex-1">
+              {/* Search Input */}
+              <div className="relative w-full sm:w-72">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search articles by title or keyword..."
+                  className="w-full bg-[#121212] border border-[#C6A962]/30 rounded-xl pl-9 pr-4 py-2.5 text-xs text-[#FFFDF7] placeholder-[#FFFDF7]/30 focus:outline-none focus:border-[#D4AF37]"
+                />
+                <svg className="w-4 h-4 text-[#C6A962]/60 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+
+              {/* Status Filter */}
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value as 'all' | 'published' | 'draft')}
+                className="w-full sm:w-auto bg-[#121212] border border-[#C6A962]/30 rounded-xl px-3 py-2.5 text-xs text-[#FFFDF7] focus:outline-none focus:border-[#D4AF37]"
+              >
+                <option value="all">All Statuses</option>
+                <option value="published">Published Only</option>
+                <option value="draft">Drafts Only</option>
+              </select>
+
+              {/* Category Filter */}
+              <select
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+                className="w-full sm:w-auto bg-[#121212] border border-[#C6A962]/30 rounded-xl px-3 py-2.5 text-xs text-[#FFFDF7] focus:outline-none focus:border-[#D4AF37]"
+              >
+                <option value="all">All Categories</option>
+                {categoriesList.map((cat) => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Primary Action Button */}
+            <button
+              onClick={handleCreateNew}
+              className="w-full md:w-auto bg-gradient-to-r from-[#D4AF37] via-[#C6A962] to-[#A8893A] text-[#121212] font-semibold text-xs uppercase tracking-wider py-3 px-6 rounded-xl hover:brightness-110 transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer flex-shrink-0"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 4v16m8-8H4" />
+              </svg>
+              <span>Create New Article</span>
+            </button>
+          </div>
+        )}
+
+        {/* Content Area */}
+        {activeTab === 'blogs' ? (
+          <div className="bg-[#1A1A1A] border border-[#C6A962]/20 rounded-2xl overflow-hidden shadow-xl">
           {loading ? (
             <div className="p-12 text-center text-[#C6A962] flex flex-col items-center gap-3">
               <svg className="animate-spin h-8 w-8 text-[#D4AF37]" fill="none" viewBox="0 0 24 24">
@@ -402,6 +450,82 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
             </div>
           )}
         </div>
+        ) : (
+          <div className="bg-[#1A1A1A] border border-[#C6A962]/20 rounded-2xl overflow-hidden shadow-xl">
+            {queriesLoading ? (
+              <div className="p-12 text-center text-[#C6A962] flex flex-col items-center gap-3">
+                <svg className="animate-spin h-8 w-8 text-[#D4AF37]" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+                <span className="text-sm font-medium">Loading queries...</span>
+              </div>
+            ) : queries.length === 0 ? (
+              <div className="p-16 text-center text-[#FAF6ED]/50 space-y-3">
+                <svg className="w-12 h-12 text-[#C6A962]/30 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <p className="text-base font-serif text-[#FFFDF7]">No queries found</p>
+                <p className="text-xs text-[#FAF6ED]/40">
+                  When clients fill out the contact form, their queries will appear here.
+                </p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-[#C6A962]/20 bg-[#141414] text-[11px] uppercase tracking-wider text-[#C6A962] font-medium">
+                      <th className="py-4 px-6">Client Info</th>
+                      <th className="py-4 px-4">Event Details</th>
+                      <th className="py-4 px-4">Message</th>
+                      <th className="py-4 px-6 text-right">Date Received</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#C6A962]/10 text-sm">
+                    {queries.map((query) => (
+                      <tr key={query.id} className="hover:bg-[#222222] transition-colors">
+                        <td className="py-4 px-6 align-top">
+                          <div className="font-semibold text-[#FFFDF7]">{query.name}</div>
+                          <div className="text-xs text-[#FAF6ED]/60 mt-1">
+                            {query.email && <div className="truncate"><a href={`mailto:${query.email}`} className="hover:text-[#D4AF37]">{query.email}</a></div>}
+                            {query.phone && <div className="truncate mt-0.5"><a href={`tel:${query.phone}`} className="hover:text-[#D4AF37]">{query.phone}</a></div>}
+                          </div>
+                        </td>
+                        <td className="py-4 px-4 align-top">
+                          <div className="text-[#C6A962] font-medium text-xs">
+                            {query.eventType === 'Other' && query.otherEventType ? query.otherEventType : (query.eventType || 'General Inquiry')}
+                          </div>
+                          {(query.eventDate || query.guestCount) && (
+                            <div className="text-[11px] text-[#FAF6ED]/50 mt-1 space-y-0.5">
+                              {query.eventDate && <div>Date: {query.eventDate}</div>}
+                              {query.guestCount && <div>Guests: {query.guestCount}</div>}
+                            </div>
+                          )}
+                        </td>
+                        <td className="py-4 px-4 align-top">
+                          <div className="text-xs text-[#FAF6ED]/80 max-w-xs whitespace-pre-wrap">
+                            {query.message || query.notes || '-'}
+                          </div>
+                          {query.ticketId && (
+                            <div className="mt-2 inline-block px-2 py-0.5 rounded text-[10px] font-mono bg-[#C6A962]/10 text-[#C6A962] border border-[#C6A962]/30">
+                              {query.ticketId}
+                            </div>
+                          )}
+                        </td>
+                        <td className="py-4 px-6 text-right align-top text-xs text-[#FAF6ED]/50 whitespace-nowrap">
+                          {new Date(query.createdAt).toLocaleDateString(undefined, { 
+                            year: 'numeric', month: 'short', day: 'numeric',
+                            hour: '2-digit', minute: '2-digit'
+                          })}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        )}
       </main>
 
       {/* Editor Modal */}

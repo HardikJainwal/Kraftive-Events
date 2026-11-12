@@ -1,10 +1,8 @@
 import { NextResponse } from 'next/server';
-import { BlogPost, slugify, calculateReadTime } from '@/lib/blogs';
-import {
-  getAllBlogs,
-  saveBlogs,
-  verifyAdminSession,
-} from '@/lib/blogs-server';
+import { slugify, calculateReadTime } from '@/lib/blogs';
+import { getAllBlogs, verifyAdminSession } from '@/lib/blogs-server';
+import dbConnect from '@/lib/mongodb';
+import BlogModel from '@/models/Blog';
 
 export async function GET() {
   const isAuth = await verifyAdminSession();
@@ -23,6 +21,7 @@ export async function POST(request: Request) {
   }
 
   try {
+    await dbConnect();
     const body = await request.json();
     const {
       title,
@@ -43,19 +42,18 @@ export async function POST(request: Request) {
       );
     }
 
-    const blogs = await getAllBlogs();
     const finalSlug = slug ? slugify(slug) : slugify(title);
 
     // Check if slug exists
-    if (blogs.some((b) => b.slug === finalSlug)) {
+    const existingBlog = await BlogModel.findOne({ slug: finalSlug });
+    if (existingBlog) {
       return NextResponse.json(
         { error: 'A post with this URL slug already exists. Please customize the slug.' },
         { status: 400 }
       );
     }
 
-    const newBlog: BlogPost = {
-      id: `blog-${Date.now()}`,
+    const newBlog = await BlogModel.create({
       slug: finalSlug,
       title: title.trim(),
       excerpt: excerpt ? excerpt.trim() : title.slice(0, 120) + '...',
@@ -67,19 +65,14 @@ export async function POST(request: Request) {
       readTime: calculateReadTime(content),
       status: status === 'published' ? 'published' : 'draft',
       featured: Boolean(featured),
-    };
+    });
 
-    blogs.unshift(newBlog);
-    const success = await saveBlogs(blogs);
+    const returnedBlog = newBlog.toObject();
+    returnedBlog.id = returnedBlog._id.toString();
+    delete returnedBlog._id;
+    delete returnedBlog.__v;
 
-    if (!success) {
-      return NextResponse.json(
-        { error: 'Failed to save blog post to database file' },
-        { status: 500 }
-      );
-    }
-
-    return NextResponse.json({ success: true, blog: newBlog });
+    return NextResponse.json({ success: true, blog: returnedBlog });
   } catch (error) {
     console.error('Error creating blog post:', error);
     return NextResponse.json(

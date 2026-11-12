@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import dbConnect from '@/lib/mongodb';
+import QueryModel from '@/models/Query';
 
 export async function POST(request: Request) {
   try {
@@ -32,6 +34,29 @@ export async function POST(request: Request) {
       eventType === 'Other' && otherEventType
         ? `Other (${otherEventType})`
         : eventType || 'General Inquiry';
+
+    // Save to Database
+    try {
+      await dbConnect();
+      await QueryModel.create({
+        name,
+        email,
+        phone,
+        eventType,
+        otherEventType,
+        eventDate,
+        guestCount,
+        notes,
+        message,
+        ticketId,
+        timestamp,
+        source
+      });
+      console.log(`[Contact API] Query saved to database for ticket ${ticketId}`);
+    } catch (dbErr) {
+      console.error('[Contact API DB Error]:', dbErr);
+      // We don't throw here to ensure the email still attempts to send
+    }
 
     const clientNotes = notes || message || 'None provided';
     const recipientEmail = process.env.NOTIFICATION_EMAIL || 'Ashoutosh@kraftiveevents.com';
