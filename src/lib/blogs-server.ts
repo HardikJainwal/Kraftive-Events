@@ -50,6 +50,11 @@ export async function getBlogBySlug(slug: string): Promise<BlogPost | null> {
   }
 }
 
+function cleanEnv(val: string | undefined, fallback: string): string {
+  if (!val) return fallback;
+  return val.trim().replace(/^["']|["']$/g, '');
+}
+
 export async function verifyAdminSession(): Promise<boolean> {
   try {
     const cookieStore = await cookies();
@@ -59,9 +64,11 @@ export async function verifyAdminSession(): Promise<boolean> {
       return false;
     }
 
-    const expectedToken = Buffer.from(
-      `${process.env.ADMIN_USERNAME || 'admin'}:${process.env.ADMIN_PASSWORD || 'kraftive2026!'}:${process.env.SESSION_SECRET || 'secret'}`
-    ).toString('base64');
+    const username = cleanEnv(process.env.ADMIN_USERNAME, 'admin');
+    const password = cleanEnv(process.env.ADMIN_PASSWORD, 'kraftive2026!');
+    const secret = cleanEnv(process.env.SESSION_SECRET, 'secret');
+
+    const expectedToken = Buffer.from(`${username}:${password}:${secret}`).toString('base64');
 
     return sessionCookie.value === expectedToken;
   } catch {
@@ -70,9 +77,11 @@ export async function verifyAdminSession(): Promise<boolean> {
 }
 
 export function generateSessionToken(): string {
-  return Buffer.from(
-    `${process.env.ADMIN_USERNAME || 'admin'}:${process.env.ADMIN_PASSWORD || 'kraftive2026!'}:${process.env.SESSION_SECRET || 'secret'}`
-  ).toString('base64');
+  const username = cleanEnv(process.env.ADMIN_USERNAME, 'admin');
+  const password = cleanEnv(process.env.ADMIN_PASSWORD, 'kraftive2026!');
+  const secret = cleanEnv(process.env.SESSION_SECRET, 'secret');
+
+  return Buffer.from(`${username}:${password}:${secret}`).toString('base64');
 }
 
 export { COOKIE_NAME, slugify, calculateReadTime };
