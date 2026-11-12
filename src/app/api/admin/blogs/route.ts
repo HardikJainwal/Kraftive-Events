@@ -73,10 +73,10 @@ export async function POST(request: Request) {
     delete returnedBlog.__v;
 
     return NextResponse.json({ success: true, blog: returnedBlog });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error creating blog post:', error);
     return NextResponse.json(
-      { error: 'An error occurred while creating the blog post' },
+      { error: error?.message || 'An error occurred while creating the blog post' },
       { status: 500 }
     );
   }

@@ -23,10 +23,10 @@ export async function GET() {
     });
 
     return NextResponse.json({ queries: mappedQueries });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching queries:', error);
     return NextResponse.json(
-      { error: 'An error occurred while fetching queries' },
+      { error: error?.message || 'An error occurred while fetching queries' },
       { status: 500 }
     );
   }
