@@ -12,10 +12,10 @@ if (!cached) {
 }
 
 async function dbConnect() {
-  const rawUri = process.env.MONGODB_URI;
+  const rawUri = process.env.KRAFTIVE_DB_URI;
 
   if (!rawUri) {
-    const errMsg = 'Please define the MONGODB_URI environment variable inside .env.local or your deployment settings';
+    const errMsg = 'Please define the KRAFTIVE_DB_URI environment variable inside .env.local or your deployment settings';
     console.error(`[MongoDB Config Error]: ${errMsg}`);
     throw new Error(errMsg);
   }
